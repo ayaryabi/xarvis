@@ -63,3 +63,57 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* Holographic shimmer effect */
+.holographic-shimmer {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.holographic-shimmer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(192, 192, 192, 0.2),
+    rgba(173, 216, 230, 0.3),
+    rgba(135, 206, 235, 0.3),
+    rgba(70, 130, 180, 0.3),
+    rgba(176, 196, 222, 0.3),
+    rgba(211, 211, 211, 0.2),
+    transparent
+  );
+  background-size: 200% 100%;
+  mix-blend-mode: color-dodge;
+  filter: blur(3px);
+  z-index: 2;
+  animation: shimmer 4s linear infinite;
+}
+
+.holographic-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.2) 10%,
+    rgba(70, 130, 180, 0.1) 20%,
+    transparent 60%
+  );
+  z-index: 3;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

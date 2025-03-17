@@ -45,7 +45,7 @@ export function LandingPage() {
           )}
         >
           <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full flex items-center justify-center mr-3 overflow-hidden metallic-logo-container">
+            <div className="h-8 w-8 rounded-full flex items-center justify-center mr-3 overflow-hidden holographic-shimmer">
               <img src="/logo_1.png" alt="XARVIS" className="h-8 w-8 object-cover" />
             </div>
             <span className="font-bold text-xl">XARVIS</span>
@@ -115,8 +115,8 @@ export function LandingPage() {
               </MacWindow>
 
               <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/40 backdrop-blur-xl text-sm text-gray-400 px-6 py-2 rounded-full border border-white/10 shadow-lg">
-                <div className="flex items-center">
-                  <div className="h-4 w-4 rounded-full overflow-hidden mr-2">
+                <div className="flex items-center space-x-2 text-xs text-gray-500">
+                  <div className="h-4 w-4 rounded-full overflow-hidden holographic-shimmer">
                     <img src="/logo_1.png" alt="XARVIS" className="h-4 w-4 object-cover" />
                   </div>
                   <span>v1.0.2 • Install via Slack App Directory</span>
