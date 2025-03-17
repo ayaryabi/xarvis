@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react"
 import { MacWindow } from "@/components/mac-window"
 import { SlackInterface } from "@/components/slack-interface"
 import { Button } from "@/components/ui/button"
+import { CostComparisonSection } from "@/components/cost-comparison"
 import {
   ChevronRight,
   Download,
@@ -198,6 +199,8 @@ export function LandingPage() {
             </div>
           </div>
         </section>
+
+        <CostComparisonSection />
 
         <section className="py-20 relative overflow-hidden" id="pricing">
           <div className="absolute inset-0 z-0">
