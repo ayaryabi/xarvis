@@ -73,7 +73,9 @@ export function ChatArea() {
         <div className="mb-6">
           <div className="flex items-start">
             <Avatar className="h-9 w-9 mr-2 mt-1">
-              <AvatarImage src="/placeholder.svg?height=36&width=36" alt="XARVIS" />
+              <div className="metallic-logo-container">
+                <AvatarImage src="/logo_1.png" alt="XARVIS" />
+              </div>
               <AvatarFallback className="bg-[#ff6363] text-white">X</AvatarFallback>
             </Avatar>
 

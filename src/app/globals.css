@@ -3,25 +3,63 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground: 0 0% 100%;
+  --background: 0 0% 3.9%;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground: 0 0% 100%;
+    --background: 0 0% 3.9%;
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background))) rgb(var(--background));
+  color: rgb(var(--foreground));
+}
+
+/* Metallic logo effect */
+.metallic-logo-container {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.metallic-logo-container::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    45deg,
+    #c0c0c0,
+    #e8e8e8,
+    #a0a0a0,
+    #d4d4d4,
+    #87ceeb,
+    #c0c0c0,
+    #e8e8e8
+  );
+  border-radius: 50%;
+  z-index: -1;
+  animation: rotate 4s linear infinite;
+}
+
+.metallic-logo-container::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: black;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

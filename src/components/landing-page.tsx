@@ -45,8 +45,8 @@ export function LandingPage() {
           )}
         >
           <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#ff6363] to-[#ff3939] flex items-center justify-center mr-3">
-              <span className="text-white font-bold">X</span>
+            <div className="h-8 w-8 rounded-full flex items-center justify-center mr-3 overflow-hidden metallic-logo-container">
+              <img src="/logo_1.png" alt="XARVIS" className="h-8 w-8 object-cover" />
             </div>
             <span className="font-bold text-xl">XARVIS</span>
           </div>
@@ -116,7 +116,9 @@ export function LandingPage() {
 
               <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/40 backdrop-blur-xl text-sm text-gray-400 px-6 py-2 rounded-full border border-white/10 shadow-lg">
                 <div className="flex items-center">
-                  <div className="h-2 w-2 rounded-full bg-[#ff6363] mr-2"></div>
+                  <div className="h-4 w-4 rounded-full overflow-hidden mr-2">
+                    <img src="/logo_1.png" alt="XARVIS" className="h-4 w-4 object-cover" />
+                  </div>
                   <span>v1.0.2 • Install via Slack App Directory</span>
                 </div>
               </div>
@@ -387,8 +389,8 @@ export function LandingPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-6 md:mb-0">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#ff6363] to-[#ff3939] flex items-center justify-center mr-2">
-                <span className="text-white font-bold">X</span>
+              <div className="h-8 w-8 rounded-full flex items-center justify-center mr-2 overflow-hidden metallic-logo-container">
+                <img src="/logo_1.png" alt="XARVIS" className="h-8 w-8 object-cover" />
               </div>
               <span className="font-bold text-xl">XARVIS</span>
             </div>

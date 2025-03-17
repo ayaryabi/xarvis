@@ -40,6 +40,9 @@ export function Sidebar({ className, isOpen, onClose }: SidebarProps) {
       <div className="p-3 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center justify-between p-2 rounded hover:bg-white/5 cursor-pointer w-full">
           <div className="font-semibold text-white flex items-center">
+            <div className="h-5 w-5 rounded-full overflow-hidden mr-2 metallic-logo-container">
+              <img src="/logo_1.png" alt="XARVIS" className="h-5 w-5 object-cover" />
+            </div>
             XARVIS
             <ChevronDown className="h-4 w-4 ml-1" />
           </div>
@@ -215,12 +218,14 @@ function AppItem({ name, isActive, onClick }: AppItemProps) {
     <div
       className={cn(
         "flex items-center px-2 py-1 rounded text-sm cursor-pointer",
-        isActive ? "bg-[#ff6363] text-white" : "text-gray-400 hover:text-white",
+        isActive ? "bg-[#ff6363] text-white" : "text-gray-400 hover:text-white"
       )}
       onClick={onClick}
     >
       <Avatar className="h-4 w-4 mr-2">
-        <AvatarImage src="/placeholder.svg?height=16&width=16" alt={name} />
+        <div className="metallic-logo-container">
+          <AvatarImage src="/logo_1.png" alt={name} />
+        </div>
         <AvatarFallback className="text-[8px] bg-[#ff6363]/20 text-[#ff6363]">{name.charAt(0)}</AvatarFallback>
       </Avatar>
       <span>{name}</span>
