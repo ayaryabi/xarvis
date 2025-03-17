@@ -365,7 +365,7 @@ export function LandingPage() {
                         Ready to transform your media buying?
                       </h3>
                       <p className="text-gray-400 mb-6 md:mb-0">
-                        Join thousands of marketers who've increased ROAS by an average of 32%.
+                        Join thousands of marketers who&apos;ve increased ROAS by an average of 32%.
                       </p>
                     </div>
                     <Button className="bg-gradient-to-r from-[#ff6363] to-[#ff3939] hover:from-[#ff7373] hover:to-[#ff4949] text-white px-8 py-6 rounded-xl text-lg h-auto whitespace-nowrap shadow-lg shadow-[#ff6363]/20 border border-[#ff6363]/20">
@@ -470,13 +470,14 @@ function ResultsCard({ icon, title, description, index }: ResultsCardProps) {
       },
     )
 
-    if (cardRef.current) {
-      observer.observe(cardRef.current)
+    const currentRef = cardRef.current
+    if (currentRef) {
+      observer.observe(currentRef)
     }
 
     return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
     }
   }, [])

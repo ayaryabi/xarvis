@@ -29,8 +29,6 @@ export function ChatArea() {
   const [showReaction, setShowReaction] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [inputValue, setInputValue] = useState("")
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const [activeMessageId, setActiveMessageId] = useState<number | null>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -185,7 +183,7 @@ export function ChatArea() {
                   <div className="flex mt-2">
                     <div className="inline-flex items-center border border-blue-500 rounded-full px-2 py-1 bg-white/5">
                       <div className="flex items-center justify-center bg-green-500 rounded-sm w-5 h-5 mr-1">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path
                             d="M20 6L9 17L4 12"
                             stroke="white"
@@ -198,7 +196,7 @@ export function ChatArea() {
                       <span className="text-sm">1</span>
                     </div>
                     <button className="ml-2 text-gray-400 hover:text-white">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
                         <path
                           d="M8 14C8.5 15.5 10 17 12 17C14 17 15.5 15.5 16 14"
