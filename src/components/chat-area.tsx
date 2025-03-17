@@ -20,6 +20,10 @@ import {
   Mic,
   FileText,
   ChevronDown,
+  ArrowUp,
+  ArrowDown,
+  XCircle,
+  MoreHorizontal,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -65,7 +69,7 @@ export function ChatArea() {
                 <span className="ml-2 text-xs text-gray-500">23:15</span>
               </div>
 
-              <div className="mt-1 text-white">sdfdsffsdfsdf</div>
+              <div className="mt-1 text-white">Show me my campaign performance</div>
             </div>
           </div>
         </div>
@@ -85,101 +89,86 @@ export function ChatArea() {
                 <span className="ml-1 text-xs px-1 bg-black/40 backdrop-blur-md rounded text-gray-400 uppercase border border-white/10">
                   APP
                 </span>
-                <span className="ml-2 text-xs text-gray-500">Friday at 11:29 PM</span>
+                <span className="ml-2 text-xs text-gray-500">8:30 AM</span>
               </div>
 
-              <div className="mt-3 text-white">
-                <div className="mb-2">CW10_ABO_Conversion_EU_V1</div>
-                <div className="mb-4">UGC_Libby_Snacking_Broad_Video_V2</div>
+              <div className="mt-3 text-white font-inter">
+                <div className="mb-4 text-lg">
+                  <span className="font-semibold">Good morning! ☀️</span> Your daily campaign briefing is ready.
+                </div>
+
+                <div className="mb-2 font-medium">Top performing campaigns:</div>
+                <div className="mb-1 pl-2 border-l-2 border-green-500">Summer_Collection_Conversion_US_V2</div>
+                <div className="mb-4 pl-2 border-l-2 border-green-500">UGC_Testimonial_Broad_Video_V3</div>
+
+                <div className="mb-2 font-medium">Campaigns needing attention:</div>
+                <div className="mb-4 pl-2 border-l-2 border-[#ff6363]">CW10_ABO_Conversion_EU_V1</div>
 
                 <div className="border-t border-white/10 my-4"></div>
 
-                <div className="mb-1">
-                  <span className="font-bold">Cost:</span> $419.06
-                </div>
-                <div className="mb-1">
-                  <span className="font-bold">Results:</span> 33
-                </div>
-                <div className="mb-1">
-                  <span className="font-bold">CPA:</span> $12.70
-                </div>
-                <div className="mb-1">
-                  <span className="font-bold">ROAS:</span> 2.03
-                </div>
-
-                <div className="flex items-center mb-4 mt-3">
-                  <span className="font-bold mr-2">Trend:</span>
-                  <div className="bg-gray-500 rounded p-1">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M12 20L12 4"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M5 13L12 20L19 13"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                <div className="p-4 bg-black/30 rounded-lg border border-white/10 mb-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium text-lg">Campaign Details</span>
+                    <span className="text-sm text-gray-400">CW10_ABO_Conversion_EU_V1</span>
                   </div>
-                </div>
-
-                <div className="mb-4">
-                  <span className="font-bold text-gray-300">XARVIS:</span> This campaign has consistently poor
-                  performance with a 7-day ROAS of 0.3, showing no signs of improvement despite optimization attempts.
-                  With high spend and minimal returns, turning off this ad set is recommended to prevent further losses.
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-2">
-                  <div className="flex">
-                    <div className="border border-white/20 bg-white/5 rounded-l-md px-3 py-2 flex items-center">
-                      <span>25%</span>
-                      <ChevronDown className="ml-1 h-4 w-4" />
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <div className="text-gray-400 text-sm">Cost</div>
+                      <div className="text-xl font-semibold">$419.06</div>
                     </div>
-                    <button
-                      className="border border-white/20 bg-white/5 rounded-r-md px-4 py-2 hover:bg-white/10"
-                      onClick={handleAction}
-                    >
-                      Increase
-                    </button>
-                  </div>
-
-                  <button
-                    className="border border-white/10 bg-[#e01e5a] text-white rounded-md px-4 py-2 hover:bg-[#e01e5a]/90"
-                    onClick={handleAction}
-                  >
-                    Turn Off
-                  </button>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <div className="flex">
-                    <div className="border border-white/20 bg-white/5 rounded-l-md px-3 py-2 flex items-center">
-                      <span>15%</span>
-                      <ChevronDown className="ml-1 h-4 w-4" />
+                    <div>
+                      <div className="text-gray-400 text-sm">Results</div>
+                      <div className="text-xl font-semibold">33</div>
                     </div>
-                    <button
-                      className="border border-white/20 bg-white/5 rounded-r-md px-4 py-2 hover:bg-white/10"
-                      onClick={handleAction}
-                    >
-                      Decrease
-                    </button>
+                    <div>
+                      <div className="text-gray-400 text-sm">CPA</div>
+                      <div className="text-xl font-semibold">$12.70</div>
+                    </div>
+                    <div>
+                      <div className="text-gray-400 text-sm">ROAS</div>
+                      <div className="text-xl font-semibold">2.03</div>
+                    </div>
                   </div>
 
-                  <button
-                    className="border border-white/20 bg-white/5 rounded-md px-4 py-2 hover:bg-white/10"
-                    onClick={handleAction}
-                  >
-                    More
-                  </button>
-                </div>
+                  <div className="flex items-center mb-4">
+                    <span className="text-gray-400 text-sm mr-2">Trend:</span>
+                    <div className="bg-[#ff6363]/20 text-[#ff6363] rounded-full px-2 py-1 flex items-center">
+                      <ArrowDown className="h-3 w-3 mr-1" />
+                      <span className="text-sm">Declining</span>
+                    </div>
+                  </div>
 
-                <div className="border-t border-white/10 my-4"></div>
+                  <div className="mb-4 text-gray-200">
+                    <span className="font-medium text-white">Analysis:</span> This campaign has consistently poor
+                    performance with a 7-day ROAS of 0.3, showing no signs of improvement despite optimization attempts.
+                    With high spend and minimal returns, turning off this ad set is recommended to prevent further losses.
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    <ActionButton 
+                      type="increase" 
+                      percentage="25%" 
+                      onClick={handleAction}
+                    />
+                    <ActionButton 
+                      type="turnOff" 
+                      onClick={handleAction}
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <ActionButton 
+                      type="decrease" 
+                      percentage="15%" 
+                      onClick={handleAction}
+                    />
+                    <ActionButton 
+                      type="more" 
+                      onClick={handleAction}
+                    />
+                  </div>
+                </div>
 
                 {showReaction && (
                   <div className="flex mt-2">
@@ -233,7 +222,7 @@ export function ChatArea() {
                 }
               }}
               placeholder="Message #xarvis"
-              className="w-full bg-transparent border-none focus:outline-none text-white"
+              className="w-full bg-transparent border-none focus:outline-none text-white font-inter"
             />
           </div>
 
@@ -298,6 +287,73 @@ function ChannelHeader() {
           Add canvas
         </Button>
       </div>
+    </div>
+  )
+}
+
+interface ActionButtonProps {
+  type: 'increase' | 'decrease' | 'turnOff' | 'more'
+  percentage?: string
+  onClick: () => void
+}
+
+function ActionButton({ type, percentage, onClick }: ActionButtonProps) {
+  const getButtonStyles = () => {
+    switch (type) {
+      case 'increase':
+        return {
+          icon: <ArrowUp className="h-4 w-4" />,
+          text: 'Increase',
+          className: 'bg-green-500/10 text-green-400 border-green-500/30 hover:bg-green-500/20'
+        }
+      case 'decrease':
+        return {
+          icon: <ArrowDown className="h-4 w-4" />,
+          text: 'Decrease',
+          className: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30 hover:bg-yellow-500/20'
+        }
+      case 'turnOff':
+        return {
+          icon: <XCircle className="h-4 w-4" />,
+          text: 'Turn Off',
+          className: 'bg-[#ff6363]/10 text-[#ff6363] border-[#ff6363]/30 hover:bg-[#ff6363]/20'
+        }
+      case 'more':
+        return {
+          icon: <MoreHorizontal className="h-4 w-4" />,
+          text: 'More',
+          className: 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10'
+        }
+      default:
+        return {
+          icon: null,
+          text: '',
+          className: ''
+        }
+    }
+  }
+
+  const { icon, text, className } = getButtonStyles()
+
+  return (
+    <div className="flex">
+      {percentage && (
+        <div className="border border-white/10 bg-black/30 rounded-l-md px-3 py-2 flex items-center">
+          <span>{percentage}</span>
+          <ChevronDown className="ml-1 h-4 w-4" />
+        </div>
+      )}
+      <button
+        className={cn(
+          "border rounded-md px-4 py-2 flex items-center transition-colors",
+          percentage ? "rounded-l-none" : "",
+          className
+        )}
+        onClick={onClick}
+      >
+        {icon && <span className="mr-2">{icon}</span>}
+        {text}
+      </button>
     </div>
   )
 }
