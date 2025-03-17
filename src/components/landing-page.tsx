@@ -488,9 +488,8 @@ function ResultsCard({ icon, title, description, index }: ResultsCardProps) {
     <div
       ref={cardRef}
       className={cn(
-        "relative mb-16 transform transition-all duration-1000 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20",
-        index % 2 === 0 ? "text-left" : "text-right",
+        "relative mb-8 transform transition-all duration-1000 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
       )}
       style={{
         transitionDelay: `${index * 200}ms`,
@@ -498,14 +497,17 @@ function ResultsCard({ icon, title, description, index }: ResultsCardProps) {
     >
       <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff6363] to-[#ff3939] rounded-xl blur opacity-30"></div>
       <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-8 shadow-xl">
-        <div className={`flex items-center ${index % 2 === 0 ? "justify-start" : "justify-end"}`}>
-          <div className="w-16 h-16 rounded-full bg-[#ff6363]/10 flex items-center justify-center mb-4">{icon}</div>
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <h3 className="text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+              {title}
+            </h3>
+            <p className="text-lg text-gray-300">{description}</p>
+          </div>
+          <div className="w-14 h-14 rounded-full bg-[#ff6363]/10 flex items-center justify-center ml-6">
+            {icon}
+          </div>
         </div>
-
-        <h3 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
-          {title}
-        </h3>
-        <p className="text-xl text-gray-300">{description}</p>
       </div>
     </div>
   )
