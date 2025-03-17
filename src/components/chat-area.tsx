@@ -2,38 +2,22 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import {
-  Send,
-  Paperclip,
-  SmilePlus,
-  Bold,
-  Italic,
-  Strikethrough,
-  Link,
-  List,
-  ListOrdered,
-  Code,
-  Undo,
-  AtSignIcon as At,
-  Image,
-  Mic,
-  FileText,
-  ChevronDown,
   ArrowUp,
   ArrowDown,
   XCircle,
   MoreHorizontal,
   Check,
+  ChevronDown,
+  FileText
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 
 export function ChatArea() {
-  const [showReaction, setShowReaction] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const [inputValue, setInputValue] = useState("")
   const [actionTaken, setActionTaken] = useState<{
     campaignId: string;
     action: string;
@@ -42,14 +26,8 @@ export function ChatArea() {
   const [showModal, setShowModal] = useState(false)
   const [modalCampaign, setModalCampaign] = useState<string | null>(null)
 
-  const handleSendMessage = () => {
-    if (inputValue.trim() === "") return
-    setInputValue("")
-  }
-
   const handleAction = (campaignId: string, action: string, message: string) => {
     setActionTaken({ campaignId, action, message })
-    setShowReaction(true)
     
     if (action === 'more') {
       setModalCampaign(campaignId)
@@ -58,7 +36,7 @@ export function ChatArea() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-[#0A0A0A]">
+    <div className="flex flex-col h-full bg-[#0A0A0A] relative">
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
@@ -77,7 +55,7 @@ export function ChatArea() {
       `}</style>
       <ChannelHeader />
 
-      <div className="flex-1 overflow-y-auto p-4 pb-[140px] hide-scrollbar scrollbar-hide">
+      <div className="flex-1 overflow-y-auto p-4 hide-scrollbar scrollbar-hide">
         <div className="mb-6">
           <div className="flex items-start">
             <Avatar className="h-9 w-9 mr-2 mt-1">
@@ -143,6 +121,34 @@ export function ChatArea() {
                   onAction={handleAction}
                 />
 
+                {/* Campaign 4 - Increase */}
+                <CampaignCard
+                  id="Google Shopping Showcase Ads"
+                  cost="$1,872.45"
+                  results="208"
+                  cpa="$9.00"
+                  roas="2.8"
+                  trend="improving"
+                  analysis="Shopping campaign demonstrates strong performance with rising conversion rates and consistent ROAS over 2.5 for the last 14 days."
+                  recommendation="increase"
+                  actionTaken={actionTaken}
+                  onAction={handleAction}
+                />
+
+                {/* Campaign 5 - Turn Off */}
+                <CampaignCard
+                  id="Pinterest Promoted Pins Fall Collection"
+                  cost="$328.92"
+                  results="17"
+                  cpa="$19.35"
+                  roas="0.6"
+                  trend="declining"
+                  analysis="This campaign has shown poor performance since launch with high CPA and minimal ROAS. The engagement metrics are also below benchmarks."
+                  recommendation="turnOff"
+                  actionTaken={actionTaken}
+                  onAction={handleAction}
+                />
+
                 {actionTaken && (
                   <div className="flex mt-2">
                     <div className="inline-flex items-center border border-blue-500 rounded-full px-2 py-1 bg-white/5">
@@ -182,13 +188,16 @@ export function ChatArea() {
       </div>
 
       {showModal && modalCampaign && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#121212] border border-white/10 rounded-lg max-w-2xl w-full p-5 shadow-xl animate-fadeIn">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setShowModal(false)}>
+          <div 
+            className="bg-[#121212] border border-white/10 rounded-lg w-[800px] p-5 shadow-xl animate-fadeIn"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-white">{modalCampaign} - Detailed Analytics</h3>
               <button 
                 onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-white p-1 rounded-full hover:bg-white/10"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -242,27 +251,7 @@ export function ChatArea() {
               </div>
             </div>
             
-            <div className="bg-black/40 rounded-lg p-4 border border-white/10 mb-6">
-              <h4 className="text-sm text-gray-400 mb-3">7-Day Performance Trend</h4>
-              <div className="h-40 flex items-end justify-between gap-2">
-                {[35, 42, 28, 56, 48, 65, 72].map((value, index) => (
-                  <div key={index} className="relative group flex flex-col items-center">
-                    <span className="absolute -top-6 text-xs opacity-0 group-hover:opacity-100 transition-opacity text-white">
-                      {value}
-                    </span>
-                    <div 
-                      className="bg-gradient-to-t from-blue-500 to-purple-500 rounded-sm w-8"
-                      style={{ height: `${value}%` }}
-                    ></div>
-                    <span className="text-xs text-gray-400 mt-1">
-                      {['M', 'T', 'W', 'T', 'F', 'S', 'S'][index]}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="bg-black/40 rounded-lg p-4 border border-white/10 mb-6">
+            <div className="bg-black/40 rounded-lg p-4 border border-white/10">
               <h4 className="text-sm text-gray-400 mb-2">AI Recommendations</h4>
               <ul className="space-y-2 text-sm text-white">
                 <li className="flex">
@@ -279,69 +268,9 @@ export function ChatArea() {
                 </li>
               </ul>
             </div>
-            
-            <div className="flex justify-end gap-3">
-              <button className="px-4 py-2 border border-white/10 rounded-md text-sm text-gray-300 hover:bg-white/5">
-                Export Data
-              </button>
-              <button className="px-4 py-2 bg-[#ff6363] rounded-md text-sm text-white hover:bg-[#ff7373]" onClick={() => setShowModal(false)}>
-                Apply Recommendations
-              </button>
-            </div>
           </div>
         </div>
       )}
-
-      <div className="fixed bottom-0 left-0 right-0 z-10 px-4 py-3 bg-[#0A0A0A] border-t border-white/10" style={{ height: "120px" }}>
-        <div className="flex flex-col rounded-md border border-white/10 bg-black/40 backdrop-blur-xl h-full">
-          <div className="p-3 flex items-center flex-1">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault()
-                  handleSendMessage()
-                }
-              }}
-              placeholder="Message #xarvis"
-              className="w-full bg-transparent border-none focus:outline-none text-white font-inter"
-            />
-          </div>
-
-          <div className="flex items-center justify-between px-3 py-2 border-t border-white/10">
-            <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide">
-              <FormatButton icon={<Bold className="h-4 w-4" />} />
-              <FormatButton icon={<Italic className="h-4 w-4" />} />
-              <FormatButton icon={<Strikethrough className="h-4 w-4" />} />
-              <FormatButton icon={<Link className="h-4 w-4" />} />
-              <FormatButton icon={<List className="h-4 w-4" />} />
-              <FormatButton icon={<ListOrdered className="h-4 w-4" />} />
-              <FormatButton icon={<Code className="h-4 w-4" />} />
-              <FormatButton icon={<Undo className="h-4 w-4" />} />
-            </div>
-
-            <div className="flex items-center space-x-3 pl-2">
-              <FormatButton icon={<At className="h-5 w-5" />} />
-              <FormatButton icon={<Paperclip className="h-5 w-5" />} />
-              <FormatButton icon={<Image className="h-5 w-5" />} />
-              <FormatButton icon={<Mic className="h-5 w-5" />} />
-              <FormatButton icon={<SmilePlus className="h-5 w-5" />} />
-              <Button
-                onClick={handleSendMessage}
-                disabled={inputValue.trim() === ""}
-                className={cn(
-                  "rounded-lg p-2 h-11 w-11 flex-shrink-0",
-                  inputValue.trim() === "" ? "bg-white/5 text-gray-400" : "bg-[#ff6363] text-white hover:bg-[#ff7373]",
-                )}
-              >
-                <Send className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
@@ -513,13 +442,13 @@ function ChannelHeader() {
     <div className="flex items-center justify-between px-4 py-2 border-b border-white/10 bg-black/40 backdrop-blur-xl">
       <div className="flex items-center">
         <span className="text-white font-bold mr-2"># xarvis</span>
-        <div className="flex items-center text-xs bg-black/40 backdrop-blur-md rounded px-2 py-1 text-gray-500 border border-white/10">
+        <div className="flex items-center text-xs bg-black/40 backdrop-blur-md rounded px-2 py-1 text-gray-400 border border-white/10">
           <Avatar className="h-4 w-4 mr-1">
             <AvatarFallback className="text-[8px] bg-white/10">1</AvatarFallback>
           </Avatar>
           <span>1</span>
         </div>
-        <div className="ml-2 flex items-center text-xs bg-black/40 backdrop-blur-md rounded px-2 py-1 text-gray-500 border border-white/10">
+        <div className="ml-2 flex items-center text-xs bg-black/40 backdrop-blur-md rounded px-2 py-1 text-gray-400 border border-white/10">
           <span>Huddle</span>
         </div>
       </div>
@@ -632,17 +561,5 @@ function ActionButton({ type, percentage, onClick, isHighlighted, isCompleted }:
         {text}
       </button>
     </div>
-  )
-}
-
-interface FormatButtonProps {
-  icon: React.ReactNode
-}
-
-function FormatButton({ icon }: FormatButtonProps) {
-  return (
-    <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/5 rounded">
-      {icon}
-    </Button>
   )
 } 

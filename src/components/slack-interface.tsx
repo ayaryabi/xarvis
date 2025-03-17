@@ -5,7 +5,6 @@ import { Sidebar } from "@/components/sidebar"
 import { ChatArea } from "@/components/chat-area"
 import { Header } from "@/components/header"
 import { useMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
 
 export function SlackInterface() {
   const isMobile = useMobile()
@@ -21,7 +20,7 @@ export function SlackInterface() {
       {/* Sidebar with conditional rendering for mobile */}
       {(sidebarOpen || !isMobile) && (
         <Sidebar 
-          className={cn(
+          className={clsx(
             isMobile ? "absolute z-20 h-full" : "w-64",
             !sidebarOpen && "hidden"
           )} 
@@ -47,6 +46,6 @@ export function SlackInterface() {
 }
 
 // Helper function for conditional class names
-function cn(...classes: (string | boolean | undefined)[]) {
+function clsx(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ")
 } 

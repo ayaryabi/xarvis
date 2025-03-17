@@ -1,27 +1,9 @@
 "use client"
 
+import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Clock, TrendingUp, DollarSign, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-interface BenefitCardProps {
-  icon: React.ReactNode
-  title: string
-  description: string
-}
-
-function BenefitCard({ icon, title, description }: BenefitCardProps) {
-  return (
-    <div className="flex flex-col items-center text-center">
-      <div className="w-16 h-16 rounded-full bg-[#ff6363]/10 flex items-center justify-center mb-4">
-        {icon}
-      </div>
-      <h3 className="text-2xl font-bold mb-2">{title}</h3>
-      <p className="text-gray-300">{description}</p>
-    </div>
-  )
-}
 
 // Define the spend tiers and their corresponding costs
 const spendTiers = [
