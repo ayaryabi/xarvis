@@ -21,8 +21,196 @@ import {
   Clock,
   TrendingUp,
   DollarSign,
+  Activity,
+  Shield,
+  Eye,
+  ArrowUp,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+
+interface AgentCapabilityProps {
+  number: number;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}
+
+function AgentCapability({ number, title, description, icon }: AgentCapabilityProps) {
+  const [isInView, setIsInView] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+        }
+      },
+      {
+        threshold: 0.3,
+      }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [])
+
+  return (
+    <div 
+      ref={ref}
+      className={cn(
+        "relative mb-6 transform transition-all duration-700 ease-out",
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      )}
+      style={{
+        transitionDelay: `${number * 150}ms`,
+      }}
+    >
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff6363] to-[#ff3939] rounded-xl blur opacity-30"></div>
+      <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-6 shadow-xl">
+        <div className="flex items-start">
+          <div className="flex-shrink-0 mr-5">
+            <div className="h-10 w-10 rounded-full flex items-center justify-center bg-[#ff6363]/10 text-[#ff6363] border border-[#ff6363]/30 mb-4">
+              {icon}
+            </div>
+            <div className="flex items-center justify-center h-8 w-8 rounded-full bg-black/60 border border-white/10 text-gray-300 font-semibold text-sm">
+              {number}
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+              {title}
+            </h3>
+            <p className="text-gray-300">{description}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AgentShowcase() {
+  const [isVisible, setIsVisible] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      {
+        threshold: 0.1,
+      }
+    )
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current)
+      }
+    }
+  }, [])
+
+  return (
+    <div className="py-24" ref={containerRef}>
+      <div className="container px-4 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className={cn(
+            "transform transition-all duration-1000",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
+          )}>
+            <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full bg-[#ff6363]/10 text-[#ff6363] border border-[#ff6363]/30 text-sm">
+              <Shield className="h-4 w-4 mr-2" />
+              <span>Agent Orion</span>
+            </div>
+            
+            <div className="relative mb-8">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff6363]/30 to-[#ff3939]/30 rounded-xl blur opacity-20"></div>
+              <div className="relative p-8 bg-black backdrop-blur-xl border border-white/10 rounded-xl shadow-xl">
+                <div className="flex items-center mb-6">
+                  <div className="relative mr-5">
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#ff6363] to-[#ff3939] rounded-full blur-md animate-pulse-slow opacity-30"></div>
+                    <div className="relative h-16 w-16 rounded-full flex items-center justify-center holographic-shimmer">
+                      <span className="text-2xl font-bold">O</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+                      Daily Campaign Management
+                    </h2>
+                    <div className="flex items-center text-[#ff6363]">
+                      <Clock className="h-4 w-4 mr-2" />
+                      <span className="text-sm">24/7 Active Monitoring</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="pl-4 border-l-2 border-[#ff6363]/30 mb-8">
+                  <p className="text-lg text-gray-300">
+                    Agent Orion scans your campaigns 24/7, identifies opportunities, and executes optimizations with a single click.
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-3 bg-black/40 rounded-lg border border-white/5">
+                    <div className="text-xl font-bold text-[#ff6363] mb-1">15 min</div>
+                    <div className="text-xs text-gray-400">Scan Interval</div>
+                  </div>
+                  <div className="text-center p-3 bg-black/40 rounded-lg border border-white/5">
+                    <div className="text-xl font-bold text-[#ff6363] mb-1">4+ hours</div>
+                    <div className="text-xs text-gray-400">Daily Time Saved</div>
+                  </div>
+                  <div className="text-center p-3 bg-black/40 rounded-lg border border-white/5">
+                    <div className="text-xl font-bold text-[#ff6363] mb-1">+25%</div>
+                    <div className="text-xs text-gray-400">ROAS Increase</div>
+                  </div>
+                  <div className="text-center p-3 bg-black/40 rounded-lg border border-white/5">
+                    <div className="text-xl font-bold text-[#ff6363] mb-1">$50k+</div>
+                    <div className="text-xs text-gray-400">Ad Spend Managed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <AgentCapability 
+              number={1} 
+              title="Continuous Monitoring" 
+              description="Orion scans your campaigns every 15 minutes, analyzing performance against KPIs to identify trends and anomalies."
+              icon={<Eye className="h-5 w-5" />}
+            />
+            <AgentCapability 
+              number={2} 
+              title="One-Click Optimizations" 
+              description="Review and apply recommended budget adjustments, creative rotations, and bid strategy changes with a single click."
+              icon={<Zap className="h-5 w-5" />}
+            />
+            <AgentCapability 
+              number={3} 
+              title="Intelligent Reporting" 
+              description="Get curated daily, weekly and monthly reports that highlight key insights and actionable recommendations."
+              icon={<Activity className="h-5 w-5" />}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
@@ -127,40 +315,7 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section className="py-20 relative" id="features">
-          <div className="absolute inset-0 z-0">
-            <div className="absolute top-1/3 right-1/4 w-1/3 h-1/3 bg-gradient-to-l from-[#ff6363]/20 to-transparent rounded-full blur-[120px]"></div>
-          </div>
-
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
-                Optimize campaigns, not detours.
-              </h2>
-              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                One interface, everything you need to maximize your ROAS.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              <FeatureCard
-                title="Real-time Analytics"
-                description="Get instant insights on campaign performance with detailed metrics and visualizations."
-                icon="📊"
-              />
-              <FeatureCard
-                title="AI Recommendations"
-                description="Receive actionable suggestions to optimize budgets, targeting, and creative assets."
-                icon="🧠"
-              />
-              <FeatureCard
-                title="Automated Adjustments"
-                description="Let AI handle routine optimizations while you focus on strategy and growth."
-                icon="⚙️"
-              />
-            </div>
-          </div>
-        </section>
+        <AgentShowcase />
 
         <section className="py-20 relative overflow-hidden" id="results">
           <div className="absolute inset-0 z-0">
@@ -414,6 +569,30 @@ export function LandingPage() {
           </div>
         </div>
       </footer>
+
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 0.7; }
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 3s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   )
 }
@@ -601,5 +780,4 @@ function FooterLink({ href, children }: FooterLinkProps) {
       {children}
     </a>
   )
-
 } 
