@@ -4,6 +4,7 @@ import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { InfoIcon } from "lucide-react"
 
 // Define the spend tiers and their corresponding costs
 const spendTiers = [
@@ -224,8 +225,16 @@ export function CostComparisonSection() {
                   <div className="flex justify-between items-center pt-2">
                     <div className="font-bold text-xl">Total Cost</div>
                     <div className="flex items-baseline">
-                      <div className="text-2xl font-bold text-[#ff6363]">$5,000/mo</div>
-                      <div className="ml-2 bg-[#ff6363]/10 text-[#ff6363] text-xs py-1 px-2 rounded">-69%</div>
+                      <div className="text-2xl font-bold text-[#ff6363]">$2,000/mo</div>
+                      <div className="ml-2 bg-[#ff6363]/10 text-[#ff6363] text-xs py-1 px-2 rounded">-88%</div>
+                      <div className="group relative ml-2">
+                        <InfoIcon className="h-4 w-4 text-gray-400 cursor-help" />
+                        <div className="absolute bottom-full right-0 mb-2 w-64 p-3 bg-black/90 backdrop-blur-md border border-white/10 rounded-lg shadow-xl text-xs text-left opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
+                          <p className="text-gray-200">This is a comparison of traditional agency costs vs. XARVIS capability. Actual pricing varies based on client needs.</p>
+                          <a href="#pricing" className="text-[#ff6363] hover:underline block mt-1">View our pricing</a>
+                          <div className="absolute top-full right-4 w-0 h-0 border-8 border-transparent border-t-black/90"></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

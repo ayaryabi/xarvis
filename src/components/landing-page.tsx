@@ -388,7 +388,7 @@ export function LandingPage() {
               <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
                 Simple, transparent pricing
               </h2>
-              <p className="text-xl text-gray-400 max-w-2xl mx-auto">Get started with our beta offer and save 50%</p>
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto">Exclusive beta pricing available now</p>
             </div>
 
             <div className="max-w-lg mx-auto">
@@ -400,30 +400,98 @@ export function LandingPage() {
                   </div>
 
                   <div className="text-center mb-6">
-                    <h3 className="text-2xl font-bold mb-2">Professional Plan</h3>
+                    <h3 className="text-2xl font-bold mb-2">XARVIS PRO</h3>
                     <div className="flex items-center justify-center">
-                      <div className="text-gray-400 text-lg line-through mr-2">$500</div>
                       <div className="text-4xl font-bold">$250</div>
                       <div className="text-gray-400 ml-1">/month</div>
                     </div>
-                    <div className="text-[#ff6363] text-sm mt-1">50% off during beta</div>
+                    <div className="text-[#ff6363] text-sm mt-1">Limited beta offer</div>
                   </div>
 
                   <div className="space-y-4 mb-8">
-                    <PricingFeature text="Unlimited campaigns" />
-                    <PricingFeature text="AI-powered recommendations" />
-                    <PricingFeature text="Real-time analytics" />
-                    <PricingFeature text="Automated optimizations" />
-                    <PricingFeature text="Multi-platform support" />
-                    <PricingFeature text="Priority support" />
+                    <div className="flex items-start">
+                      <div className="h-6 w-6 rounded-full bg-[#ff6363]/20 flex-shrink-0 flex items-center justify-center mr-3 mt-0.5">
+                        <Check className="h-3.5 w-3.5 text-[#ff6363]" />
+                      </div>
+                      <div>
+                        <span className="text-gray-200 font-medium">Agent Orion</span>
+                        <div className="text-gray-400 text-sm">Campaign Management & Optimization</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="h-6 w-6 rounded-full bg-[#ff6363]/20 flex-shrink-0 flex items-center justify-center mr-3 mt-0.5">
+                        <Check className="h-3.5 w-3.5 text-[#ff6363]" />
+                      </div>
+                      <div>
+                        <div className="flex items-center">
+                          <span className="text-gray-300 font-medium">Agent Echo</span>
+                          <span className="ml-2 text-xs bg-[#ff6363]/10 text-[#ff6363]/70 px-2 py-0.5 rounded-full">Coming Soon</span>
+                        </div>
+                        <div className="text-gray-400 text-sm">Creative Generation & Testing</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="h-6 w-6 rounded-full bg-[#ff6363]/20 flex-shrink-0 flex items-center justify-center mr-3 mt-0.5">
+                        <Check className="h-3.5 w-3.5 text-[#ff6363]" />
+                      </div>
+                      <div>
+                        <div className="flex items-center">
+                          <span className="text-gray-300 font-medium">Agent Zero</span>
+                          <span className="ml-2 text-xs bg-[#ff6363]/10 text-[#ff6363]/70 px-2 py-0.5 rounded-full">Coming Soon</span>
+                        </div>
+                        <div className="text-gray-400 text-sm">Analytics & Reporting</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="h-6 w-6 rounded-full bg-[#ff6363]/20 flex-shrink-0 flex items-center justify-center mr-3 mt-0.5">
+                        <Check className="h-3.5 w-3.5 text-[#ff6363]" />
+                      </div>
+                      <div>
+                        <div className="flex items-center">
+                          <span className="text-gray-300 font-medium">Agent Nexus</span>
+                          <span className="ml-2 text-xs bg-[#ff6363]/10 text-[#ff6363]/70 px-2 py-0.5 rounded-full">Coming Soon</span>
+                        </div>
+                        <div className="text-gray-400 text-sm">Cross-Platform Integration</div>
+                      </div>
+                    </div>
+                    
+                    <div className="border-t border-white/10 my-6 pt-6">
+                      <p className="text-gray-200 font-medium mb-3">During Beta:</p>
+                      <div className="flex items-center mb-2">
+                        <div className="h-5 w-5 rounded-full bg-[#ff6363]/20 flex items-center justify-center mr-3">
+                          <Check className="h-3 w-3 text-[#ff6363]" />
+                        </div>
+                        <span className="text-gray-300">Unlimited campaigns</span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <div className="h-5 w-5 rounded-full bg-[#ff6363]/20 flex items-center justify-center mr-3">
+                          <Check className="h-3 w-3 text-[#ff6363]" />
+                        </div>
+                        <span className="text-gray-300">Unlimited ad spend</span>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="h-5 w-5 rounded-full bg-[#ff6363]/20 flex items-center justify-center mr-3">
+                          <Check className="h-3 w-3 text-[#ff6363]" />
+                        </div>
+                        <span className="text-gray-300">Priority support</span>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-[#ff6363]/10 rounded-xl p-4 text-sm">
+                      <p className="text-[#ff6363] font-medium mb-1">Exclusive Beta Offer:</p>
+                      <p className="text-gray-300">Flat $250/month pricing regardless of ad spend during our beta phase. Lock in this rate by joining now!</p>
+                    </div>
                   </div>
 
                   <Button className="w-full bg-gradient-to-r from-[#ff6363] to-[#ff3939] hover:from-[#ff7373] hover:to-[#ff4949] text-white py-6 rounded-xl text-lg h-auto shadow-lg shadow-[#ff6363]/20 border border-[#ff6363]/20">
-                    Get Started
+                   Get Started Free
                     <ChevronRight className="ml-2 h-5 w-5" />
                   </Button>
 
-                  <div className="text-center text-sm text-gray-400 mt-4">No credit card required to start</div>
+                  <div className="text-center text-sm text-gray-400 mt-4">Try XARVIS for free for 14 days</div>
                 </div>
               </div>
             </div>
