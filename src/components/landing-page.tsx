@@ -123,7 +123,7 @@ function AgentShowcase() {
   }, [])
 
   return (
-    <div className="py-24" ref={containerRef}>
+    <div className="py-24" ref={containerRef} id="agent-orion">
       <div className="container px-4 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
@@ -262,12 +262,10 @@ export function LandingPage() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-10">
-            <NavLink href="#features">Features</NavLink>
-            <NavLink href="#results">Results</NavLink>
-            <NavLink href="#pricing">Pricing</NavLink>
-            <NavLink href="#roadmap">Roadmap</NavLink>
+            <NavLink href="#agent-orion">Agent Orion</NavLink>
+            <NavLink href="#roadmap">Features</NavLink>
             <NavLink href="#community">Community</NavLink>
-            <NavLink href="#docs">Docs</NavLink>
+            <NavLink href="#pricing">Pricing</NavLink>
           </nav>
 
           <div className="flex items-center gap-6">
@@ -275,7 +273,7 @@ export function LandingPage() {
               Log in
             </Button>
             <Button className="bg-white text-black hover:bg-white/90 transition-all px-5 py-2 rounded-lg">
-              Get Started
+              Hire XARVIS
             </Button>
           </div>
         </div>
@@ -286,7 +284,6 @@ export function LandingPage() {
           <div className="absolute inset-0 z-0">
             <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-gradient-to-r from-[#ff6363]/30 to-transparent rounded-full blur-[120px]"></div>
             <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-gradient-to-l from-[#ff6363]/30 to-transparent rounded-full blur-[120px]"></div>
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover opacity-10 mix-blend-overlay"></div>
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
@@ -487,7 +484,7 @@ export function LandingPage() {
                   </div>
 
                   <Button className="w-full bg-gradient-to-r from-[#ff6363] to-[#ff3939] hover:from-[#ff7373] hover:to-[#ff4949] text-white py-6 rounded-xl text-lg h-auto shadow-lg shadow-[#ff6363]/20 border border-[#ff6363]/20">
-                   Get Started Free
+                    Hire XARVIS
                     <ChevronRight className="ml-2 h-5 w-5" />
                   </Button>
 
@@ -618,7 +615,7 @@ export function LandingPage() {
                       </p>
                     </div>
                     <Button className="bg-gradient-to-r from-[#ff6363] to-[#ff3939] hover:from-[#ff7373] hover:to-[#ff4949] text-white px-8 py-6 rounded-xl text-lg h-auto whitespace-nowrap shadow-lg shadow-[#ff6363]/20 border border-[#ff6363]/20">
-                      Get Started Free
+                      Hire XARVIS
                       <ChevronRight className="ml-2 h-5 w-5" />
                     </Button>
                   </div>
@@ -643,13 +640,10 @@ export function LandingPage() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-6 md:mb-0">
-              <FooterLink href="#features">Features</FooterLink>
-              <FooterLink href="#results">Results</FooterLink>
-              <FooterLink href="#pricing">Pricing</FooterLink>
-              <FooterLink href="#roadmap">Roadmap</FooterLink>
+              <FooterLink href="#agent-orion">Agent Orion</FooterLink>
+              <FooterLink href="#roadmap">Features</FooterLink>
               <FooterLink href="#community">Community</FooterLink>
-              <FooterLink href="#blog">Blog</FooterLink>
-              <FooterLink href="#docs">Docs</FooterLink>
+              <FooterLink href="#pricing">Pricing</FooterLink>
               <FooterLink href="#privacy">Privacy</FooterLink>
               <FooterLink href="#terms">Terms</FooterLink>
             </div>
