@@ -143,8 +143,8 @@ function AgentShowcase() {
                 <div className="flex items-center mb-6">
                   <div className="relative mr-5">
                     <div className="absolute inset-0 bg-gradient-to-r from-[#ff6363] to-[#ff3939] rounded-full blur-md animate-pulse-slow opacity-30"></div>
-                    <div className="relative h-16 w-16 rounded-full flex items-center justify-center holographic-shimmer">
-                      <span className="text-2xl font-bold">O</span>
+                    <div className="relative h-16 w-16 rounded-full flex items-center justify-center holographic-shimmer overflow-hidden">
+                      <img src="/agent_orion.png" alt="Agent Orion" className="h-full w-full object-cover" />
                     </div>
                   </div>
                   <div>
