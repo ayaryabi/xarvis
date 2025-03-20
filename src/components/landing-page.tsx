@@ -16,8 +16,6 @@ import {
   Zap,
   Target,
   BarChart3,
-  Layers,
-  Brain,
   Clock,
   TrendingUp,
   DollarSign,
@@ -463,7 +461,7 @@ export function LandingPage() {
                       </div>
                       <div>
                         <div className="flex items-center">
-                          <span className="text-gray-300 font-medium">Agent Echo</span>
+                          <span className="text-gray-300 font-medium">Agent Apollo</span>
                           <span className="ml-2 text-xs bg-[#ff6363]/10 text-[#ff6363]/70 px-2 py-0.5 rounded-full">Coming Soon</span>
                         </div>
                         <div className="text-gray-400 text-sm">Creative Generation & Testing</div>
@@ -476,7 +474,7 @@ export function LandingPage() {
                       </div>
                       <div>
                         <div className="flex items-center">
-                          <span className="text-gray-300 font-medium">Agent Zero</span>
+                          <span className="text-gray-300 font-medium">Agent Cipher</span>
                           <span className="ml-2 text-xs bg-[#ff6363]/10 text-[#ff6363]/70 px-2 py-0.5 rounded-full">Coming Soon</span>
                         </div>
                         <div className="text-gray-400 text-sm">Analytics & Reporting</div>
@@ -546,39 +544,27 @@ export function LandingPage() {
               <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
                 Coming soon
               </h2>
-              <p className="text-xl text-gray-400 max-w-2xl mx-auto">Exciting new features on our roadmap</p>
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto">Meet the rest of the XARVIS Strike Team</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
               <RoadmapCard
-                title="Fully Autonomous Campaign Creation"
-                description="Create high-performing campaigns with a single prompt. AI handles targeting, creative selection, and budget allocation."
+                title="Agent Apollo"
+                tagline="The Creative Mastermind"
+                description="Analyzes winning creatives & generates new ad scripts. Identifies trends in top-performing ads and helps craft high-converting ad variations."
                 icon={<Sparkles className="h-6 w-6 text-[#ff6363]" />}
               />
               <RoadmapCard
-                title="Fully Autonomous Campaign Optimization"
-                description="Let AI continuously monitor and optimize your campaigns 24/7, making real-time adjustments for maximum performance."
-                icon={<Zap className="h-6 w-6 text-[#ff6363]" />}
-              />
-              <RoadmapCard
-                title="Advanced Audience Targeting"
-                description="Discover untapped audience segments with AI-powered analysis of your customer data and market trends."
+                title="Agent Nexus"
+                tagline="The Growth Engine"
+                description="Autonomous campaign creation & audience expansion. Finds new high-value audiences & segments and scales best-performing ad sets without manual input."
                 icon={<Target className="h-6 w-6 text-[#ff6363]" />}
               />
               <RoadmapCard
-                title="Cross-Platform Analytics"
-                description="Get unified insights across all your marketing channels in one centralized dashboard with actionable recommendations."
+                title="Agent Cipher"
+                tagline="The AI Analyst"
+                description="Pulls instant insights & performance breakdowns. Answers any ad-related questions directly in Slack and tracks key performance shifts and alerts you proactively."
                 icon={<BarChart3 className="h-6 w-6 text-[#ff6363]" />}
-              />
-              <RoadmapCard
-                title="Creative Asset Generation"
-                description="Generate high-converting ad creatives tailored to your brand and target audience with AI-powered design tools."
-                icon={<Layers className="h-6 w-6 text-[#ff6363]" />}
-              />
-              <RoadmapCard
-                title="Predictive Budget Allocation"
-                description="Optimize your marketing budget with AI predictions that identify the highest ROI opportunities across channels."
-                icon={<Brain className="h-6 w-6 text-[#ff6363]" />}
               />
             </div>
           </div>
@@ -815,11 +801,12 @@ function ResultsCard({ icon, title, description, index }: ResultsCardProps) {
 
 interface RoadmapCardProps {
   title: string
+  tagline: string
   description: string
   icon: React.ReactNode
 }
 
-function RoadmapCard({ title, description, icon }: RoadmapCardProps) {
+function RoadmapCard({ title, tagline, description, icon }: RoadmapCardProps) {
   return (
     <div className="relative group">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff6363] to-[#ff3939] rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity"></div>
@@ -834,7 +821,8 @@ function RoadmapCard({ title, description, icon }: RoadmapCardProps) {
           </div>
         </div>
 
-        <h3 className="text-xl font-bold mb-3">{title}</h3>
+        <h3 className="text-xl font-bold mb-1">{title}</h3>
+        <h4 className="text-[#ff6363] text-sm font-medium mb-3">{tagline}</h4>
         <p className="text-gray-400">{description}</p>
       </div>
     </div>

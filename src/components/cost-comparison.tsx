@@ -135,7 +135,7 @@ export function CostComparisonSection() {
                         </svg>
                       </div>
                       <div>
-                        <div className="font-medium">Agent Echo</div>
+                        <div className="font-medium">Agent Apollo</div>
                         <div className="text-sm text-gray-400">Creative Generation & Testing</div>
                       </div>
                     </div>
@@ -151,7 +151,7 @@ export function CostComparisonSection() {
                         </svg>
                       </div>
                       <div>
-                        <div className="font-medium">Agent Zero</div>
+                        <div className="font-medium">Agent Cipher</div>
                         <div className="text-sm text-gray-400">Analytics & Reporting</div>
                       </div>
                     </div>
