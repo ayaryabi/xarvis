@@ -284,33 +284,42 @@ export function LandingPage() {
             </Button>
           </div>
           
-          <div className="md:hidden flex items-center">
-            <Button variant="ghost" onClick={toggleMobileMenu} className="text-gray-400 hover:text-white">
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+          {/* Mobile menu button - inside header container */}
+          <div className="md:hidden">
+            <button
+              onClick={toggleMobileMenu}
+              className="w-10 h-10 rounded-full bg-black/70 border border-white/10 flex items-center justify-center"
+            >
+              <Menu className="h-5 w-5 text-white" />
+            </button>
           </div>
         </div>
-        
-        {/* Mobile Menu */}
-        <div className={cn(
-          "fixed inset-0 bg-black/80 backdrop-blur-xl z-40 transition-transform duration-300 md:hidden",
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        )}>
-          <div className="flex flex-col items-center justify-center h-full space-y-6 p-8">
-            <div className="w-full flex flex-col items-center space-y-6 mb-8">
-              <MobileNavLink href="#agent-orion" onClick={() => setMobileMenuOpen(false)}>Agent Orion</MobileNavLink>
-              <MobileNavLink href="#roadmap" onClick={() => setMobileMenuOpen(false)}>Features</MobileNavLink>
-              <MobileNavLink href="#community" onClick={() => setMobileMenuOpen(false)}>Community</MobileNavLink>
-              <MobileNavLink href="#pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</MobileNavLink>
-              <MobileNavLink href="#" onClick={() => setMobileMenuOpen(false)}>Log in</MobileNavLink>
-            </div>
+      </header>
+      
+      {/* Mobile Menu - Fullscreen Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-xl z-50 md:hidden flex flex-col items-center justify-center">
+          {/* Close button - inside the menu overlay */}
+          <button 
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/70 border border-white/10 flex items-center justify-center z-50"
+            onClick={toggleMobileMenu}
+          >
+            <X className="h-5 w-5 text-white" />
+          </button>
+          
+          <div className="w-full flex flex-col items-center space-y-8 p-8">
+            <MobileNavLink href="#agent-orion" onClick={() => setMobileMenuOpen(false)}>Agent Orion</MobileNavLink>
+            <MobileNavLink href="#roadmap" onClick={() => setMobileMenuOpen(false)}>Features</MobileNavLink>
+            <MobileNavLink href="#community" onClick={() => setMobileMenuOpen(false)}>Community</MobileNavLink>
+            <MobileNavLink href="#pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</MobileNavLink>
+            <MobileNavLink href="#" onClick={() => setMobileMenuOpen(false)}>Log in</MobileNavLink>
             
-            <Button className="w-full bg-white text-black hover:bg-white/90 transition-all px-5 py-4 rounded-lg text-lg">
+            <Button className="mt-4 w-full bg-white text-black hover:bg-white/90 transition-all px-5 py-4 rounded-lg text-lg">
               Hire XARVIS
             </Button>
           </div>
         </div>
-      </header>
+      )}
 
       <main>
         <section className="pt-32 pb-20 relative overflow-hidden">
