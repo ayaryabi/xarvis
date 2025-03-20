@@ -24,7 +24,6 @@ import {
   Activity,
   Shield,
   Eye,
-  ArrowUp,
   Menu,
   X,
 } from "lucide-react"
@@ -748,25 +747,6 @@ function NavLink({ href, children }: NavLinkProps) {
   )
 }
 
-interface FeatureCardProps {
-  title: string
-  description: string
-  icon: string
-}
-
-function FeatureCard({ title, description, icon }: FeatureCardProps) {
-  return (
-    <div className="relative group">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff6363] to-[#ff3939] rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity"></div>
-      <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all shadow-lg">
-        <div className="text-4xl mb-4">{icon}</div>
-        <h3 className="text-xl font-bold mb-3">{title}</h3>
-        <p className="text-gray-400">{description}</p>
-      </div>
-    </div>
-  )
-}
-
 interface ResultsCardProps {
   icon: React.ReactNode
   title: string
@@ -888,21 +868,6 @@ function CommunityCard({ icon, title, stats, description, actionText }: Communit
           <ArrowRight className="ml-2 h-4 w-4" />
         </a>
       </div>
-    </div>
-  )
-}
-
-interface PricingFeatureProps {
-  text: string
-}
-
-function PricingFeature({ text }: PricingFeatureProps) {
-  return (
-    <div className="flex items-center">
-      <div className="h-5 w-5 rounded-full bg-[#ff6363]/20 flex items-center justify-center mr-3">
-        <Check className="h-3 w-3 text-[#ff6363]" />
-      </div>
-      <span className="text-gray-300">{text}</span>
     </div>
   )
 }

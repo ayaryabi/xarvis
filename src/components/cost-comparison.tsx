@@ -1,62 +1,11 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import { InfoIcon } from "lucide-react"
-
-// Define the spend tiers and their corresponding costs
-const spendTiers = [
-  {
-    value: "50K",
-    label: "$50K",
-    traditionalCost: 9500,
-    xarvisCost: 3000,
-    savingsPercentage: 67,
-    traditionalRoas: 2.1,
-    xarvisRoas: 2.6,
-    traditionalHours: 60,
-    xarvisHours: 15,
-  },
-  {
-    value: "100K",
-    label: "$100K",
-    traditionalCost: 12500,
-    xarvisCost: 4000,
-    savingsPercentage: 68,
-    traditionalRoas: 2.2,
-    xarvisRoas: 2.7,
-    traditionalHours: 80,
-    xarvisHours: 20,
-  },
-  {
-    value: "200K",
-    label: "$200K",
-    traditionalCost: 15000,
-    xarvisCost: 5000,
-    savingsPercentage: 67,
-    traditionalRoas: 2.3,
-    xarvisRoas: 2.9,
-    traditionalHours: 100,
-    xarvisHours: 25,
-  },
-  {
-    value: "500K",
-    label: "$500K",
-    traditionalCost: 21000,
-    xarvisCost: 7500,
-    savingsPercentage: 70,
-    traditionalRoas: 2.4,
-    xarvisRoas: 3.0,
-    traditionalHours: 120,
-    xarvisHours: 30,
-  },
-];
 
 export function CostComparisonSection() {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden" id="cost-comparison">
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/3 right-1/4 w-1/3 h-1/3 bg-gradient-to-l from-[#ff6363]/20 to-transparent rounded-full blur-[120px]"></div>
       </div>
