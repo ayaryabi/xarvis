@@ -25,6 +25,8 @@ import {
   Shield,
   Eye,
   ArrowUp,
+  Menu,
+  X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -167,12 +169,12 @@ function AgentShowcase() {
                 </div>
                 
                 <div className="bg-black/20 p-6 rounded-xl mb-8">
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex items-center">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5">
+                    <div className="flex items-center mb-2 sm:mb-0">
                       <DollarSign className="h-5 w-5 text-[#ff6363] mr-2" />
                       <span className="text-white font-medium">Impact for a $50K/month ad account</span>
                     </div>
-                    <div className="px-3 py-1 rounded-full bg-[#ff6363]/10 text-[#ff6363] border border-[#ff6363]/30 text-xs">
+                    <div className="px-3 py-1 rounded-full bg-[#ff6363]/10 text-[#ff6363] border border-[#ff6363]/30 text-xs self-start sm:self-auto">
                       Impact Analysis
                     </div>
                   </div>
@@ -235,6 +237,7 @@ function AgentShowcase() {
 
 export function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -244,6 +247,10 @@ export function LandingPage() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
+  }
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -268,11 +275,37 @@ export function LandingPage() {
             <NavLink href="#pricing">Pricing</NavLink>
           </nav>
 
-          <div className="flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-6">
             <Button variant="ghost" className="text-gray-400 hover:text-white">
               Log in
             </Button>
             <Button className="bg-white text-black hover:bg-white/90 transition-all px-5 py-2 rounded-lg">
+              Hire XARVIS
+            </Button>
+          </div>
+          
+          <div className="md:hidden flex items-center">
+            <Button variant="ghost" onClick={toggleMobileMenu} className="text-gray-400 hover:text-white">
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
+        </div>
+        
+        {/* Mobile Menu */}
+        <div className={cn(
+          "fixed inset-0 bg-black/80 backdrop-blur-xl z-40 transition-transform duration-300 md:hidden",
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        )}>
+          <div className="flex flex-col items-center justify-center h-full space-y-6 p-8">
+            <div className="w-full flex flex-col items-center space-y-6 mb-8">
+              <MobileNavLink href="#agent-orion" onClick={() => setMobileMenuOpen(false)}>Agent Orion</MobileNavLink>
+              <MobileNavLink href="#roadmap" onClick={() => setMobileMenuOpen(false)}>Features</MobileNavLink>
+              <MobileNavLink href="#community" onClick={() => setMobileMenuOpen(false)}>Community</MobileNavLink>
+              <MobileNavLink href="#pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</MobileNavLink>
+              <MobileNavLink href="#" onClick={() => setMobileMenuOpen(false)}>Log in</MobileNavLink>
+            </div>
+            
+            <Button className="w-full bg-white text-black hover:bg-white/90 transition-all px-5 py-4 rounded-lg text-lg">
               Hire XARVIS
             </Button>
           </div>
@@ -873,6 +906,18 @@ interface FooterLinkProps {
 function FooterLink({ href, children }: FooterLinkProps) {
   return (
     <a href={href} className="text-gray-400 hover:text-white transition-colors">
+      {children}
+    </a>
+  )
+}
+
+function MobileNavLink({ href, onClick, children }: NavLinkProps & { onClick?: () => void }) {
+  return (
+    <a 
+      href={href} 
+      className="text-xl text-white hover:text-[#ff6363] py-2 transition-colors w-full text-center"
+      onClick={onClick}
+    >
       {children}
     </a>
   )
