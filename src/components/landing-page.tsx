@@ -132,54 +132,70 @@ function AgentShowcase() {
             "transform transition-all duration-1000",
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
           )}>
-            <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full bg-[#ff6363]/10 text-[#ff6363] border border-[#ff6363]/30 text-sm">
-              <Shield className="h-4 w-4 mr-2" />
-              <span>Agent Orion</span>
-            </div>
-            
             <div className="relative mb-8">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff6363]/30 to-[#ff3939]/30 rounded-xl blur opacity-20"></div>
               <div className="relative p-8 bg-black backdrop-blur-xl border border-white/10 rounded-xl shadow-xl">
+                <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#ff6363]/10 text-[#ff6363] border border-[#ff6363]/30 text-sm mb-6">
+                  <Shield className="h-4 w-4 mr-2" />
+                  <span>Agent Orion</span>
+                </div>
+              
                 <div className="flex items-center mb-6">
                   <div className="relative mr-5">
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#ff6363] to-[#ff3939] rounded-full blur-md animate-pulse-slow opacity-30"></div>
-                    <div className="relative h-16 w-16 rounded-full flex items-center justify-center holographic-shimmer overflow-hidden">
-                      <img src="/agent_orion.png" alt="Agent Orion" className="h-full w-full object-cover" />
+                    <div className="h-16 w-16 rounded-full overflow-hidden bg-black border border-white/10">
+                      <div className="h-full w-full subtle-glow flex items-center justify-center">
+                        <img src="/agent_orion.png" alt="Agent Orion" className="h-14 w-14 object-contain" />
+                      </div>
                     </div>
                   </div>
                   <div>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+                    <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
                       Daily Campaign Management
                     </h2>
-                    <div className="flex items-center text-[#ff6363]">
-                      <Clock className="h-4 w-4 mr-2" />
-                      <span className="text-sm">24/7 Active Monitoring</span>
-                    </div>
                   </div>
                 </div>
                 
                 <div className="pl-4 border-l-2 border-[#ff6363]/30 mb-8">
                   <p className="text-lg text-gray-300">
-                    Agent Orion scans your campaigns 24/7, identifies opportunities, and executes optimizations with a single click.
+                    24/7 campaign monitoring with AI-powered optimization recommendations for maximum ROAS.
                   </p>
                 </div>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-3 bg-black/40 rounded-lg border border-white/5">
-                    <div className="text-xl font-bold text-[#ff6363] mb-1">15 min</div>
-                    <div className="text-xs text-gray-400">Scan Interval</div>
+                <div className="bg-black/20 p-6 rounded-xl mb-8">
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center">
+                      <DollarSign className="h-5 w-5 text-[#ff6363] mr-2" />
+                      <span className="text-white font-medium">Impact for a $50K/month ad account</span>
+                    </div>
+                    <div className="px-3 py-1 rounded-full bg-[#ff6363]/10 text-[#ff6363] border border-[#ff6363]/30 text-xs">
+                      Impact Analysis
+                    </div>
                   </div>
-                  <div className="text-center p-3 bg-black/40 rounded-lg border border-white/5">
-                    <div className="text-xl font-bold text-[#ff6363] mb-1">4+ hours</div>
-                    <div className="text-xs text-gray-400">Daily Time Saved</div>
-                  </div>
-                  <div className="text-center p-3 bg-black/40 rounded-lg border border-white/5">
-                    <div className="text-xl font-bold text-[#ff6363] mb-1">+25%</div>
-                    <div className="text-xs text-gray-400">ROAS Increase</div>
-                  </div>
-                  <div className="text-center p-3 bg-black/40 rounded-lg border border-white/5">
-                    <div className="text-xl font-bold text-[#ff6363] mb-1">$50k+</div>
-                    <div className="text-xs text-gray-400">Ad Spend Managed</div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="text-gray-400 text-sm mb-1">Daily Management</div>
+                        <div className="flex items-center">
+                          <span className="text-white font-medium text-lg">4 hours</span>
+                          <ArrowRight className="mx-3 h-4 w-4 text-gray-500" />
+                          <span className="text-[#ff6363] font-bold text-lg">10 min</span>
+                          <span className="ml-2 bg-[#ff6363]/10 text-[#ff6363] text-xs py-0.5 px-1.5 rounded-sm">-96%</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="text-gray-400 text-sm mb-1">Average ROAS</div>
+                        <div className="flex items-center">
+                          <span className="text-white font-medium text-lg">1.8x</span>
+                          <ArrowRight className="mx-3 h-4 w-4 text-gray-500" />
+                          <span className="text-[#ff6363] font-bold text-lg">2.4x</span>
+                          <span className="ml-2 bg-[#ff6363]/10 text-[#ff6363] text-xs py-0.5 px-1.5 rounded-sm">+33%</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -547,7 +563,7 @@ export function LandingPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-6 md:mb-0">
-              <div className="h-8 w-8 rounded-full flex items-center justify-center mr-2 overflow-hidden metallic-logo-container">
+              <div className="h-8 w-8 rounded-full flex items-center justify-center mr-2 overflow-hidden holographic-shimmer">
                 <img src="/logo_1.png" alt="XARVIS" className="h-8 w-8 object-cover" />
               </div>
               <span className="font-bold text-xl">XARVIS</span>
@@ -591,6 +607,19 @@ export function LandingPage() {
         }
         .animate-pulse-slow {
           animation: pulse-slow 3s ease-in-out infinite;
+        }
+        .holographic-shimmer {
+          background: linear-gradient(135deg, rgba(255,99,99,0.05) 0%, rgba(255,99,99,0.15) 25%, rgba(255,255,255,0.25) 50%, rgba(255,99,99,0.15) 75%, rgba(255,99,99,0.05) 100%);
+          background-size: 400% 400%;
+          animation: shimmer 8s ease infinite;
+        }
+        .subtle-glow {
+          background: radial-gradient(circle, rgba(255,99,99,0.3) 0%, rgba(0,0,0,0) 70%);
+        }
+        @keyframes shimmer {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
       `}</style>
     </div>
