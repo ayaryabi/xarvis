@@ -671,8 +671,9 @@ export function LandingPage() {
               <FooterLink href="#roadmap">Features</FooterLink>
               <FooterLink href="#community">Community</FooterLink>
               <FooterLink href="#pricing">Pricing</FooterLink>
-              <FooterLink href="#privacy">Privacy</FooterLink>
-              <FooterLink href="#terms">Terms</FooterLink>
+              <FooterLink href="/privacy">Privacy</FooterLink>
+              <FooterLink href="/terms">Terms</FooterLink>
+              <FooterLink href="/data-deletion">Data Deletion</FooterLink>
             </div>
 
             <div className="text-sm text-gray-500">© 2025 XARVIS. All rights reserved.</div>
