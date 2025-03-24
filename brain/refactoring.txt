@@ -161,13 +161,6 @@ Page components assemble complete sections
 6. Finally update the main page to use the new components
 7. Test and remove original files once everything works
 
-
-
-
-
-
-
-
 ## Navbar Implementation Plan (Step-by-Step Execution)
 
 ### Step 1: Create Required Folder Structure
@@ -226,6 +219,76 @@ Page components assemble complete sections
    - Check for conflicting styles from existing components
    - Adjust the padding-top of the main content
 
+## Component Implementation Reference Table
 
+| Component Type | Component Name | File Path | Description | Variants/Props |
+|----------------|---------------|-----------|-------------|----------------|
+| **UI Components (Atoms)** |
+| Button | Button | `src/components/ui/button/` | Basic button component | primary, secondary, ghost, icon sizes: default, large, icon |
+| Container | Container | `src/components/ui/container.tsx` | Layout wrapper for consistent width | default, narrow, medium, wide, full-width |
+| Badge | Badge | `src/components/ui/badge/` | Small label component | default, pill, feature, status |
+| Card | Card | `src/components/ui/card/` | Container for content blocks | default, glow, feature, results, agent, community, CTA, pricing props: hoverable, glowing, bordered |
+| Logo | Logo | `src/components/common/logo/` | XARVIS logo with effects | holographic, metallic, plain sizes: small, medium, large |
+| Heading | Heading | `src/components/ui/heading/` | Text heading component | title, section, card, subsection props: gradient, centered |
+| Avatar | Avatar | `src/components/ui/avatar/` | User/agent avatar | circle, square sizes: sm, md, lg |
+| Sheet | Sheet | `src/components/ui/sheet/` | Slide-out panel | side: top, right, bottom, left |
+| MacWindow | MacWindow | `src/components/ui/mac-window.tsx` | macOS window styling | N/A |
+| **Common Components (Molecules)** |
+| InViewAnimation | InView | `src/components/common/intersection/in-view.tsx` | Animate on scroll into view | fade-up, fade-in, slide-in delay options |
+| IconCircle | IconCircle | `src/components/common/icons/icon-circle.tsx` | Icon in circular container | primary, secondary sizes: sm, md, lg |
+| Gradient | Gradient | `src/components/common/gradient/` | Gradient background effects | background, glow, text directions and intensities |
+| **Feature Components (Organisms)** |
+| AgentCapability | AgentCapability | `src/components/features/landing/agent-capability.tsx` | Feature card with number | props: number, title, description, icon |
+| AgentShowcase | AgentShowcase | `src/components/features/landing/agent-showcase.tsx` | Agent display with metrics | Animation on scroll |
+| ResultsCard | ResultsCard | `src/components/features/landing/results-card.tsx` | Metrics display card | props: icon, title, description, index |
+| RoadmapCard | RoadmapCard | `src/components/features/landing/roadmap-card.tsx` | Coming soon agent card | props: title, tagline, description, icon |
+| CommunityCard | CommunityCard | `src/components/features/landing/community-card.tsx` | Platform community card | props: icon, title, stats, description, actionText |
+| PricingCard | PricingCard | `src/components/features/landing/pricing-card.tsx` | Pricing plan display | props: title, price, features, cta |
+| NavLink | NavLink | `src/components/features/landing/nav-link.tsx` | Navigation link | desktop, mobile |
+| FooterLink | FooterLink | `src/components/features/landing/footer-link.tsx` | Footer navigation link | props: href, children |
+| **Page Components (Templates)** |
+| Navbar | Navbar | `src/components/pages/landing/navbar.tsx` | Main navigation bar | Support for scroll change, mobile menu |
+| Hero | Hero | `src/components/pages/landing/hero.tsx` | Hero section with CTAs | Background gradient effects |
+| Features | FeaturesSection | `src/components/pages/landing/features.tsx` | Features showcase section | Agent capabilities |
+| Results | ResultsSection | `src/components/pages/landing/results.tsx` | Results metrics section | Results cards |
+| Pricing | PricingSection | `src/components/pages/landing/pricing.tsx` | Pricing section | Pricing card, feature comparison |
+| Roadmap | RoadmapSection | `src/components/pages/landing/roadmap.tsx` | Coming soon section | Roadmap cards |
+| Community | CommunitySection | `src/components/pages/landing/community.tsx` | Community links section | Community cards |
+| CTA | CTASection | `src/components/pages/landing/cta.tsx` | Call to action section | CTA card, button |
+| Footer | Footer | `src/components/pages/landing/footer.tsx` | Page footer | Logo, links, copyright |
 
+## Implementation Priority Order
 
+For each component category, implementation should follow this sequence:
+
+1. **First: UI Components (Atoms)**
+   - Container.tsx
+   - Button (index.tsx, variants.ts)
+   - Card (index.tsx, variants.ts)
+   - Badge (index.tsx, variants.ts)
+   - Heading (index.tsx, variants.ts)
+   - Logo components
+
+2. **Second: Common Components (Molecules)**
+   - InView animation components
+   - Gradient effects
+   - Icon wrappers
+
+3. **Third: Feature Components (Organisms)**
+   - AgentCapability
+   - ResultsCard
+   - RoadmapCard
+   - CommunityCard
+   - NavLink and FooterLink
+
+4. **Fourth: Page Components (Templates)**
+   - Navbar (first to test the setup)
+   - Footer
+   - Hero
+   - Then remaining page sections
+
+5. **Fifth: Page Assembly**
+   - Assemble all components in page.tsx
+   - Test and adjust as needed
+
+###########
