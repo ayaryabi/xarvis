@@ -1,0 +1,683 @@
+### XARVIS Architecture Documentation
+
+1. Database Structure (Supabase)
+
+-- AUTHENTICATION & USERS
+-- Purpose: Core user management integrated with Clerk for authentication
+users (
+  id: uuid primary key
+  clerk_id: text unique     -- Link to Clerk user
+  email: text
+  name: text
+  avatar_url: text
+  created_at: timestamp
+)
+
+-- ORGANIZATION & USERS
+-- Purpose: Core company/team management. Each organization can have multiple users
+-- and workspaces. This is the top-level structure.
+organizations (
+  id: uuid primary key
+  name: text
+  created_at: timestamp
+  settings: jsonb    -- org-wide settings like billing, preferences
+)
+
+organization_members (
+  id: uuid primary key
+  organization_id: uuid references organizations(id)
+  user_id: uuid references users(id)  -- Links to our users table
+  role: text        -- admin, member, etc.
+  created_at: timestamp
+)
+
+-- SUBSCRIPTION MANAGEMENT
+-- Purpose: Define and track subscription plans, limits, and usage
+subscription_plans (
+  id: uuid primary key
+  name: text          -- 'Basic', 'Pro', etc.
+  monthly_price: decimal
+  yearly_price: decimal
+  limits: jsonb {     -- Flexible structure for plan limits
+    channels: number,
+    members: number,
+    ad_accounts: number,
+    agents: {
+      orion: {
+        daily_reports: number,
+        monitored_accounts: number
+      },
+      qa: {
+        queries_per_day: number
+      }
+    }
+  }
+)
+
+organization_subscriptions (
+  id: uuid primary key
+  organization_id: uuid references organizations(id)
+  plan_id: uuid references subscription_plans(id)
+  stripe_subscription_id: text
+  status: text        -- active, past_due, cancelled
+  current_period_end: timestamp
+  created_at: timestamp
+)
+
+usage_logs (
+  id: uuid primary key
+  organization_id: uuid references organizations(id)
+  feature: text      -- 'orion.reports', 'channels.count', etc.
+  count: integer
+  period_start: timestamp
+  period_end: timestamp
+)
+
+-- CHANNELS
+-- Purpose: Workspaces within organizations. Like Slack channels, each can have
+-- different purposes (e.g., Facebook Ads, TikTok Ads) and different agents/accounts connected
+channels (
+  id: uuid primary key
+  organization_id: uuid references organizations(id)
+  name: text
+  type: text        -- general, marketing, etc.
+  created_at: timestamp
+  settings: jsonb   -- channel-specific settings
+)
+
+-- AD ACCOUNT MANAGEMENT
+-- Purpose: Store all ad accounts users have access to. When they connect Facebook,
+-- we store all their accounts here for easy access and management
+user_ad_accounts (
+  id: uuid primary key
+  user_id: uuid references users(id)  -- Updated to reference users table
+  platform: text       -- facebook, tiktok, etc.
+  account_id: text     -- platform's account ID
+  account_name: text
+  access_token: text
+  refresh_token: text
+  metadata: jsonb      -- store account info, permissions, etc.
+  created_at: timestamp
+  last_synced: timestamp
+)
+
+-- PLATFORM CONNECTIONS
+-- Purpose: Links between channels and ad accounts. When users add accounts to a channel,
+-- this tracks which accounts are connected where
+platform_connections (
+  id: uuid primary key
+  channel_id: uuid references channels(id)
+  platform: text       -- facebook, tiktok, etc.
+  account_id: text     -- platform's account ID
+  account_name: text
+  access_token: text
+  refresh_token: text
+  metadata: jsonb      -- account specific data
+  status: text         -- active, disconnected, etc.
+)
+
+-- AGENTS
+-- Purpose: Core agent definitions. These are the available AI agents in the system,
+-- their capabilities, and how they present themselves
+agents (
+  id: uuid primary key
+  name: text          -- internal name (orion, qa, etc.)
+  display_name: text  -- user-facing name
+  description: text
+  avatar_url: text    -- agent's profile picture
+  capabilities: jsonb  -- what the agent can do
+  settings_schema: jsonb -- required settings for agent
+  metadata: jsonb      -- additional profile/config data
+)
+
+-- CHANNEL AGENTS
+-- Purpose: Tracks which agents are active in which channels and their specific
+-- configurations for that channel
+channel_agents (
+  id: uuid primary key
+  channel_id: uuid references channels(id)
+  agent_id: uuid references agents(id)
+  is_active: boolean
+  settings: jsonb     -- agent settings for this channel
+  connected_accounts: uuid[] -- which ad accounts this agent monitors
+)
+
+-- MESSAGES & THREADS
+-- Purpose: All communication in channels. Separating messages and threads for
+-- better performance and cleaner data structure
+messages (
+  id: uuid primary key
+  channel_id: uuid references channels(id)
+  user_id: uuid       -- null if from agent
+  agent_id: uuid references agents(id)  -- null if from user
+  content: jsonb      -- structured message content
+  type: text         -- text, agent_report, etc.
+  metadata: jsonb    -- additional message data
+  created_at: timestamp
+)
+
+threads (
+  id: uuid primary key
+  message_id: uuid references messages(id)
+  user_id: uuid
+  agent_id: uuid references agents(id)
+  content: jsonb
+  type: text
+  metadata: jsonb
+  created_at: timestamp
+)
+
+-- AGENT MARKETPLACE
+-- Purpose: Store available agents for purchase/activation and manage subscriptions
+agent_marketplace (
+  id: uuid primary key
+  agent_id: uuid references agents(id)
+  price: decimal
+  features: jsonb
+  requirements: jsonb
+)
+
+-- AD PERFORMANCE DATA
+-- Purpose: Store historical performance data from ad platforms
+-- These tables store daily snapshots of all advertising data
+ad_campaigns (
+  id: uuid primary key
+  platform: text                    -- facebook, tiktok, etc.
+  platform_campaign_id: text        -- ID from the ad platform
+  account_id: text                  -- Ad account ID
+  name: text
+  objective: text
+  status: text
+  daily_budget: decimal
+  lifetime_budget: decimal
+  start_time: timestamp
+  end_time: timestamp
+  created_at: timestamp
+  last_updated: timestamp
+)
+
+ad_sets (
+  id: uuid primary key
+  campaign_id: uuid references ad_campaigns(id)
+  platform_adset_id: text
+  name: text
+  status: text
+  targeting: jsonb                  -- Detailed targeting settings
+  optimization_goal: text
+  billing_event: text
+  bid_strategy: text
+  daily_budget: decimal
+  lifetime_budget: decimal
+  created_at: timestamp
+  last_updated: timestamp
+)
+
+ads (
+  id: uuid primary key
+  adset_id: uuid references ad_sets(id)
+  platform_ad_id: text
+  name: text
+  status: text
+  creative_type: text
+  created_at: timestamp
+  last_updated: timestamp
+)
+
+-- Daily performance metrics for each level
+campaign_metrics (
+  id: uuid primary key
+  campaign_id: uuid references ad_campaigns(id)
+  date: date
+  spend: decimal
+  impressions: integer
+  clicks: integer
+  conversions: integer
+  conversion_value: decimal
+  ctr: decimal
+  cpc: decimal
+  cpm: decimal
+  roas: decimal
+  frequency: decimal
+  reach: integer
+  unique_clicks: integer
+  cost_per_conversion: decimal
+  raw_metrics: jsonb               -- Store all other metrics
+  created_at: timestamp
+)
+
+adset_metrics (
+  id: uuid primary key
+  adset_id: uuid references ad_sets(id)
+  date: date
+  spend: decimal
+  impressions: integer
+  clicks: integer
+  conversions: integer
+  conversion_value: decimal
+  ctr: decimal
+  cpc: decimal
+  cpm: decimal
+  roas: decimal
+  frequency: decimal
+  reach: integer
+  unique_clicks: integer
+  cost_per_conversion: decimal
+  raw_metrics: jsonb               -- Store all other metrics
+  created_at: timestamp
+)
+
+ad_metrics (
+  id: uuid primary key
+  ad_id: uuid references ads(id)
+  date: date
+  spend: decimal
+  impressions: integer
+  clicks: integer
+  conversions: integer
+  conversion_value: decimal
+  ctr: decimal
+  cpc: decimal
+  cpm: decimal
+  roas: decimal
+  frequency: decimal
+  reach: integer
+  unique_clicks: integer
+  cost_per_conversion: decimal
+  raw_metrics: jsonb               -- Store all other metrics
+  created_at: timestamp
+)
+
+2. Next.js Application Structure
+
+src/
+├── app/                        # Next.js 13+ App Router
+│   ├── layout.tsx             # Main app layout with navigation
+│   ├── (auth)/                # Authentication routes
+│   │   ├── login/
+│   │   └── register/
+│   │
+│   ├── (dashboard)/           # Main application routes
+│   │   ├── page.tsx          # Home with channels list
+│   │   ├── [channelId]/      # Channel specific pages
+│   │   │   ├── layout.tsx    # Channel layout with tabs
+│   │   │   ├── page.tsx      # Messages view (default)
+│   │   │   ├── agents/       # Agent management
+│   │   │   ├── connections/  # Ad account connections
+│   │   │   └── settings/     # Channel settings
+│   │   └── marketplace/      # Agent shop
+│   └── settings/             # Organization settings
+│
+├── components/               # Reusable React components
+│   ├── layout/              # Layout components
+│   │   ├── MainNav.tsx     # Main left navigation
+│   │   ├── ChannelList.tsx # Channel sidebar
+│   │   └── ChannelTabs.tsx # Channel top navigation
+│   │
+│   ├── messages/           # Message related components
+│   │   ├── MessageList.tsx
+│   │   ├── MessageThread.tsx
+│   │   └── MessageInput.tsx
+│   │
+│   ├── agents/            # Agent related components
+│   │   ├── message-blocks/  # Reusable message blocks
+│   │   │   ├── KPIBlock.tsx
+│   │   │   ├── ChartBlock.tsx
+│   │   │   └── ActionBlock.tsx
+│   │   │
+│   │   └── agent-types/    # Agent specific components
+│   │       ├── orion/
+│   │       │   ├── OrionReport.tsx
+│   │       │   └── OrionAlert.tsx
+│   │       └── qa/
+│   │
+│   └── connections/       # Ad account connection components
+│       ├── AccountConnect.tsx
+│       └── AccountList.tsx
+│
+├── lib/                  # Shared utilities and logic
+│   ├── supabase/        # Supabase client & helpers
+│   ├── agents/          # Agent logic & types
+│   ├── platforms/       # Platform API integrations
+│   └── utils/           # Shared utilities
+│
+└── types/               # TypeScript definitions
+
+3. Key Workflows
+
+1. Navigation Structure
+Main Nav (Left) → Channel List → Channel Tabs
+└── Home        └── #marketing └── Messages
+└── Dashboard   └── #general   └── Agents
+└── Settings    └── #sales     └── Connections
+                               └── Settings
+
+2. Message Flow
+Message
+└── Core Message Content
+    └── Threads
+        └── Responses
+            └── Sub-threads
+
+3. Agent Activation Flow
+Channel
+└── Agents Tab
+    └── Available Agents
+        └── Configure Agent
+            └── Select Ad Accounts
+                └── Set Parameters
+                    └── Activate
+
+4. Ad Account Connection Flow
+User Level:
+└── Connect to Facebook
+    └── Store all available accounts
+        └── Available for any channel
+
+Channel Level:
+└── Connections Tab
+    └── Select from available accounts
+        └── Configure access
+            └── Activate in channel
+
+4. Component Building Blocks
+
+Purpose: Reusable UI components for agent messages and interactions
+
+Message Components:
+├── Basic Blocks
+│   ├── Text Block
+│   ├── KPI Block
+│   ├── Chart Block
+│   └── Action Button Block
+│
+└── Agent-Specific
+    └── Orion
+        ├── Campaign Report
+        ├── Performance Alert
+        └── Action Panel
+
+Example Message Structure:
+{
+  type: "agent_report",
+  components: [
+    {
+      type: "kpi",
+      data: { label: "ROAS", value: 3.2 }
+    },
+    {
+      type: "chart",
+      data: { /* chart data */ }
+    },
+    {
+      type: "action",
+      data: { 
+        type: "button",
+        label: "Optimize",
+        action: "optimize_campaign"
+      }
+    }
+  ]
+}
+
+5. Authentication & Subscription Flows
+
+1. Authentication Flow (Clerk Integration)
+Sign Up/Login → Clerk Authentication → Create User Record
+└── First Time?
+    └── Create Organization
+        └── Set Free Trial Plan
+        └── Redirect to Onboarding
+
+2. Subscription Management Flow
+Organization Dashboard
+└── Subscription Settings
+    ├── Current Plan Details
+    │   ├── Limits
+    │   └── Usage Statistics
+    ├── Upgrade Options
+    └── Billing History
+
+3. Feature Access Check Flow
+User Action (e.g., Create Channel)
+└── Check Organization's Plan
+    └── Check Current Usage
+        └── Within Limits?
+            ├── Yes → Allow Action
+            └── No → Show Upgrade Prompt
+
+4. Example Plan Structure
+Basic Plan:
+└── Limits
+    ├── 2 Channels
+    ├── 3 Team Members
+    ├── 2 Ad Accounts
+    └── Agent Limits
+        ├── Orion: 5 daily reports
+        └── QA: 20 queries/day
+
+Pro Plan:
+└── Limits
+    ├── 10 Channels
+    ├── 10 Team Members
+    ├── 5 Ad Accounts
+    └── Agent Limits
+        ├── Orion: 20 daily reports
+        └── QA: 100 queries/day
+
+5. Usage Tracking
+Daily Aggregation
+└── Per Feature
+    ├── Channel Count
+    ├── Member Count
+    ├── Active Ad Accounts
+    └── Agent Usage
+        ├── Reports Generated
+        └── Queries Made
+
+6. Technical Overview & Architecture Decisions
+
+1. System Overview
+XARVIS is an AI-powered media buying ecosystem that enables organizations to manage and optimize their advertising through AI agents. The system is built with scalability, multi-tenancy, and extensibility as core principles.
+
+2. Core Technical Stack
+├── Frontend
+│   ├── Next.js 13+ (App Router)   -- Modern React framework with built-in routing and SSR
+│   ├── TypeScript                 -- Type safety and better developer experience
+│   └── Tailwind CSS              -- Utility-first CSS for rapid UI development
+│
+├── Backend & Infrastructure
+│   ├── Supabase                  -- PostgreSQL database with real-time capabilities
+│   ├── Clerk                     -- Authentication and user management
+│   └── Stripe                    -- Subscription and payment processing
+│
+└── AI Infrastructure
+    ├── OpenAI                    -- Core AI capabilities for agents
+    └── Custom Agent Framework    -- Proprietary agent orchestration
+
+3. Key Architectural Decisions
+
+a) Channel-Based Architecture
+   - WHY: Inspired by Slack's workspace model
+   - BENEFITS:
+     ├── Natural organization of work by purpose/client/brand
+     ├── Granular access control and permissions
+     ├── Isolated environments for different ad accounts
+     └── Clear context for AI agents
+
+b) Agent-Channel Relationship
+   - WHY: Agents are tools that can be added to channels
+   - BENEFITS:
+     ├── Flexible agent deployment (same agent, different contexts)
+     ├── Clear scope for agent operations
+     ├── Easy usage tracking per channel
+     └── Simple mental model for users
+
+c) Message-Thread Structure
+   - WHY: Conversations need structure but also flexibility
+   - BENEFITS:
+     ├── Clear conversation history
+     ├── Structured data for AI processing
+     ├── Support for rich message types (reports, alerts)
+     └── Easy to extend with new message types
+
+4. Data Flow & Integration Points
+
+User Journey:
+Sign Up → Create Organization → Create Channel → Connect Ad Account → Add Agent → Interact
+└── Clerk   └── Supabase       └── Real-time   └── Platform APIs   └── Agent    └── AI
+    Auth        Database           Updates         & OAuth             Market       Processing
+
+Agent Workflow:
+User Request → Agent Activation → Data Gathering → Processing → Response Generation → Action
+└── Channel     └── Permission    └── Ad APIs     └── AI       └── Structured      └── Ad
+    Context        Check             & History       Models        Messages           Platform
+
+5. Scalability Considerations
+
+a) Database Design
+   - Separate tables for clear concerns
+   - JSONB for flexible schemas
+   - Efficient indexing for common queries
+   - Usage tracking built-in
+
+b) Multi-Tenancy
+   - Organization-level isolation
+   - Per-feature usage tracking
+   - Resource limits by subscription
+   - Separate agent instances per channel
+
+c) Performance
+   - Real-time updates where needed
+   - Asynchronous processing for AI tasks
+   - Caching for frequently accessed data
+   - Batch processing for usage aggregation
+
+6. Security Model
+
+Access Control Hierarchy:
+Organization → Channels → Ad Accounts → Agents
+└── Members     └── Access    └── Credentials └── Permissions
+    & Roles         Control       & Tokens       & Limits
+
+7. Extensibility Points
+
+a) New Agents
+   - Standardized agent interface
+   - Pluggable AI models
+   - Custom message types
+   - Flexible settings schema
+
+b) New Platforms
+   - Abstract platform interface
+   - Standardized OAuth flow
+   - Common credential management
+   - Unified usage tracking
+
+c) New Features
+   - JSONB fields for flexible data
+   - Modular component architecture
+   - Subscription plan feature flags
+   - Usage tracking framework
+
+8. Why This Architecture?
+
+The architecture is designed to solve several key challenges in AI-powered media buying:
+
+1. Context Management
+   - Channels provide clear boundaries
+   - Each channel has its own purpose
+   - Agents understand their context
+   - Clear data organization
+
+2. Scalability
+   - Organizations can grow
+   - Multiple channels per org
+   - Multiple agents per channel
+   - Usage-based pricing
+
+3. Flexibility
+   - New agents can be added
+   - New platforms can be integrated
+   - New features can be added
+   - New message types supported
+
+4. Security
+   - Clear access control
+   - Secure credential storage
+   - Activity audit trails
+   - Resource isolation
+
+This architecture enables XARVIS to serve as a powerful, scalable platform where AI agents can effectively manage and optimize advertising across multiple platforms while maintaining clear organization, security, and extensibility.
+
+9. Data Collection & Processing
+
+1. Daily Data Collection Process
+├── Schedule: Daily at 3 AM UTC (after Facebook's data refresh)
+├── Scope: All connected ad accounts
+└── Process Flow:
+    ├── 1. Fetch Active Accounts
+    │   └── Query platform_connections for active Facebook accounts
+    │
+    ├── 2. Data Collection (Per Account)
+    │   ├── Fetch Campaign Data
+    │   ├── Fetch AdSet Data
+    │   ├── Fetch Ad Data
+    │   └── Fetch Metrics for each level
+    │
+    ├── 3. Data Processing
+    │   ├── Transform raw data
+    │   ├── Calculate derived metrics
+    │   └── Validate data integrity
+    │
+    └── 4. Data Storage
+        ├── Update structure tables (campaigns, adsets, ads)
+        └── Insert daily metrics
+
+2. Data Usage
+├── Real-time Analysis
+│   ├── Compare current performance with historical
+│   ├── Detect anomalies
+│   └── Generate insights
+│
+├── Historical Analysis
+│   ├── Performance trends
+│   ├── Seasonal patterns
+│   └── A/B test results
+│
+└── AI Training
+    ├── Model training data
+    ├── Performance prediction
+    └── Optimization recommendations
+
+3. Benefits of Historical Data Storage
+├── Performance Analysis
+│   ├── Track long-term trends
+│   ├── Seasonal analysis
+│   └── Campaign comparison
+│
+├── AI Agent Enhancement
+│   ├── Better recommendations
+│   ├── Pattern recognition
+│   └── Predictive capabilities
+│
+└── Reporting
+    ├── Custom date ranges
+    ├── Cross-campaign analysis
+    └── Performance benchmarking
+
+4. Data Retention & Management
+├── Raw Data: 90 days
+├── Aggregated Data: Indefinite
+└── Cleanup Process
+    ├── Daily aggregation
+    ├── Weekly summarization
+    └── Monthly archival
+
+This historical data serves as the foundation for:
+- AI agent decision making
+- Performance analysis
+- Trend identification
+- Optimization recommendations
+- Custom reporting
+
+
