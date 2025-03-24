@@ -1,0 +1,231 @@
+1. Existing Component Structure Analysis
+Current structure:
+
+src/components/
+├── landing-page.tsx (39KB, 887 lines) - Main landing page, contains all sections
+├── cost-comparison.tsx (12KB, 208 lines) - Pricing comparison component
+├── chat-area.tsx (21KB, 565 lines) - Chat interface mockup
+├── slack-interface.tsx (1.5KB, 51 lines) - Slack UI mockup
+├── sidebar.tsx (7.3KB, 234 lines) - Sidebar component
+├── slack.tsx (862B, 28 lines) - Slack container component
+├── mobile-nav.tsx (458B, 17 lines) - Mobile navigation
+├── header.tsx (1.2KB, 35 lines) - Header component
+├── mac-window.tsx (1.2KB, 34 lines) - MacOS window styling
+└── ui/
+    ├── sheet.tsx (4.2KB, 138 lines) - Slide-out panel
+    ├── avatar.tsx (1.4KB, 48 lines) - User avatar component
+    └── button.tsx (1.8KB, 53 lines) - Button component
+
+Key observations:
+Most components are monolithic (landing-page.tsx is 887 lines)
+UI components folder exists but is minimally used
+No clear organization by feature or purpose
+Components mix presentation and business logic
+
+2. New Component Structure Mapping
+Based on our atomic design and the existing components, here's the detailed new structure:
+
+src/components/
+├── ui/                          # Atomic UI components
+│   ├── button/                  # EXISTING: Move from ui/button.tsx
+│   │   ├── index.tsx            # Main button component
+│   │   └── variants.ts          # Button styling variants
+│   ├── avatar/                  # EXISTING: Move from ui/avatar.tsx
+│   │   └── index.tsx            # Avatar component
+│   ├── sheet/                   # EXISTING: Move from ui/sheet.tsx
+│   │   └── index.tsx            # Sheet component
+│   ├── card/                    # NEW: Extract from landing-page.tsx
+│   │   ├── index.tsx            # Basic card component
+│   │   └── variants.ts          # Card styling variants (glow, border, etc.)
+│   ├── badge/                   # NEW: Extract from landing-page.tsx ("inline-flex items-center px-3 py-1 rounded-full...")
+│   │   ├── index.tsx            # Label/tag component
+│   │   └── variants.ts          # Badge styling variants
+│   ├── heading/                 # NEW: Extract from landing-page.tsx
+│   │   ├── index.tsx            # Heading component with consistent styling
+│   │   └── variants.ts          # Heading size/style variants
+│   ├── container.tsx            # NEW: Extract from landing-page.tsx ("container px-4 max-w-7xl mx-auto")
+│   └── mac-window.tsx           # EXISTING: Move from components/mac-window.tsx
+│
+├── common/                      # Reusable component combinations
+│   ├── icons/                   # Icon components with consistent styling
+│   │   └── index.tsx            # Re-exports with consistent sizing/styling
+│   ├── animation/               # Animation-related components
+│   │   ├── fade-in.tsx          # Extract animation logic from various components
+│   │   └── slide-in.tsx         # Extract animation logic from various components
+│   └── intersection/            # Intersection observer components
+│       └── in-view.tsx          # Extract IntersectionObserver logic from components
+│
+├── features/                    # Feature-specific components
+│   ├── landing/                 # Landing page specific components
+│   │   ├── agent-capability.tsx # EXTRACT from landing-page.tsx AgentCapability
+│   │   ├── agent-showcase.tsx   # EXTRACT from landing-page.tsx AgentShowcase
+│   │   ├── feature-card.tsx     # EXTRACT from landing-page.tsx feature cards
+│   │   ├── nav-link.tsx         # EXTRACT from landing-page.tsx navigation links
+│   │   ├── pricing-plan.tsx     # EXTRACT from cost-comparison.tsx pricing plan cards
+│   │   └── footer-link.tsx      # EXTRACT from landing-page.tsx footer links
+│   └── demo/                    # Demo components
+│       ├── chat-demo.tsx        # EXTRACT from chat-area.tsx
+│       └── slack-demo.tsx       # COMBINE slack.tsx and slack-interface.tsx
+│
+└── pages/                      # Full page sections
+    └── landing/                # Landing page sections
+        ├── navbar.tsx          # EXTRACT from landing-page.tsx navigation section
+        ├── hero.tsx            # EXTRACT from landing-page.tsx hero section
+        ├── features.tsx        # EXTRACT from landing-page.tsx features section
+        ├── agent-section.tsx   # EXTRACT from landing-page.tsx agent section
+        ├── pricing.tsx         # RENAME from cost-comparison.tsx
+        ├── testimonials.tsx    # EXTRACT from landing-page.tsx testimonials
+        └── footer.tsx          # EXTRACT from landing-page.tsx footer section
+
+4. Verification Against Next.js Structure
+The structure aligns with our next_js_structure.txt file, with these mappings:
+UI components match our atomic level
+Common components provide reusable utilities
+Feature components are organized by domain
+Page components assemble complete sections
+
+# XARVIS Codebase Refactoring Plan
+
+## Phase 1: UI Components (Atomic Level)
+
+### Create folder structure:
+- Create the folders for ui, common, features, and pages
+
+### Migrate existing UI components:
+- Move button.tsx → ui/button/index.tsx and extract variants
+- Move avatar.tsx → ui/avatar/index.tsx
+- Move sheet.tsx → ui/sheet/index.tsx
+- Move mac-window.tsx → ui/mac-window.tsx
+
+### Create new UI components:
+- Extract card.tsx from landing-page.tsx (style of agent capability cards)
+- Extract badge.tsx from landing-page.tsx (agent labels, tags)
+- Extract heading.tsx from landing-page.tsx (section headings)
+- Create container.tsx for layout containers
+
+## Phase 2: Common Components (Molecule Level)
+
+### Create animation components:
+- Extract fade-in.tsx from intersection observer logic in landing-page.tsx
+- Create in-view.tsx for intersection observer wrapper
+
+### Create icon components:
+- Create icons/index.tsx to re-export icons with consistent styling
+
+## Phase 3: Feature Components (Organism Level)
+
+### Extract landing page feature components:
+- Create agent-capability.tsx from AgentCapability function
+- Create agent-showcase.tsx from AgentShowcase function
+- Create feature-card.tsx from feature card sections
+- Create nav-link.tsx from navigation link styling
+- Create pricing-plan.tsx from cost-comparison.tsx plan cards
+- Create footer-link.tsx from landing-page.tsx footer links
+
+### Extract demo components:
+- Create chat-demo.tsx from chat-area.tsx
+- Create slack-demo.tsx from slack.tsx and slack-interface.tsx
+
+## Phase 4: Page Components (Template Level)
+
+### Extract landing page sections:
+- Create navbar.tsx from landing page navigation
+- Create hero.tsx from landing page hero section
+- Create features.tsx from features section
+- Create agent-section.tsx from agent section
+- Rename cost-comparison.tsx to pricing.tsx
+- Create testimonials.tsx from testimonials section
+- Create footer.tsx from footer section
+
+## Phase 5: Update App Page
+
+### Create new landing page:
+- Create new app/page.tsx that imports and assembles section components
+
+## Phase 6: Testing & Cleanup
+
+### Test the new structure:
+- Verify visual consistency with original landing page
+- Fix any styling issues from the refactoring
+
+### Remove old components:
+- Once everything is working, remove the original monolithic files
+
+## Implementation Sequence
+
+1. Create all folders first
+2. Start with UI components (atoms) as they have fewest dependencies
+3. Then create common components that may depend on UI components
+4. Next create feature components that depend on both UI and common
+5. Then create page section components that assemble features
+6. Finally update the main page to use the new components
+7. Test and remove original files once everything works
+
+
+
+
+
+
+
+
+## Navbar Implementation Plan (Step-by-Step Execution)
+
+### Step 1: Create Required Folder Structure
+1. Run these commands to create the necessary directories:
+   - `mkdir -p src/components/ui/button`
+   - `mkdir -p src/components/ui/container`
+   - `mkdir -p src/components/pages/landing`
+
+### Step 2: Create UI Component Files
+1. Create Button component files:
+   - Create `src/components/ui/button/variants.ts` - Contains button styling variants
+   - Create `src/components/ui/button/index.tsx` - Button component that uses variants
+   - Add "use client" directive at the top of index.tsx
+   - Export the Button component and buttonVariants
+
+2. Create Container component:
+   - Create `src/components/ui/container.tsx` - For layout container
+   - Create a Container component that accepts size props
+   - Add classNames for different container sizes
+
+### Step 3: Create Navbar Component
+1. Create the navbar component file:
+   - Create `src/components/pages/landing/navbar.tsx`
+   - Add "use client" directive at the top
+   - Import Button from ui/button
+   - Import Container from ui/container
+   - Import Menu and X icons from lucide-react
+   - Create Navbar component with mobile menu state
+   - Implement desktop and mobile navigation
+   - Style with Tailwind classes
+
+### Step 4: Update Main Page
+1. Edit the main page file:
+   - Open `src/app/page.tsx`
+   - Import Navbar from components/pages/landing/navbar
+   - Keep importing LandingPage from existing components
+   - Wrap LandingPage with Navbar
+   - Add padding to account for fixed navbar (pt-16)
+
+### Step 5: Testing
+1. Start the development server:
+   - Run `npm run dev`
+   - Check if navbar displays correctly
+   - Test mobile navigation toggle
+   - Verify links point to correct sections
+   - Check if existing page content still works
+
+### Step 6: Troubleshooting Common Issues
+1. If dependencies are missing:
+   - Ensure cva is installed (`npm install class-variance-authority`)
+   - Ensure lucide-react is installed
+   - Check that cn utility function exists in lib/utils
+
+2. If styling issues occur:
+   - Verify Tailwind classes are working
+   - Check for conflicting styles from existing components
+   - Adjust the padding-top of the main content
+
+
+
+
