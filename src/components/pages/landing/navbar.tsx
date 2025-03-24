@@ -27,7 +27,7 @@ export function Navbar() {
         }`}
       >
         <div className="flex items-center">
-          <Logo className="mr-3" />
+          <Logo className="mr-3" effect="holographic" />
           <span className="font-bold text-xl">XARVIS</span>
         </div>
 
