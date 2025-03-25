@@ -27,6 +27,7 @@ XARVIS is a multi-tenant SaaS application for AI-powered ad campaign management 
 ├── .next/                      # Next.js build output
 ├── node_modules/               # Dependencies
 ├── .gitignore
+├── middleware.ts               # Global middleware for all routes
 ├── package.json
 ├── tsconfig.json
 ├── tailwind.config.js
@@ -268,7 +269,20 @@ src/
 │       └── fallback-ui.tsx    # Fallback UI when errors occur
 │
 ├── server/                     # Dedicated server-side code (separate from lib)
-│   ├── agents/                 # Agent core logic
+│   ├── core/                   # Foundational utilities and shared services
+│   │   ├── config.ts           # Configuration management
+│   │   ├── database.ts         # Database connection and utilities
+│   │   └── types.ts            # Core type definitions
+│   │
+│   ├── platforms/              # Third-party platform integrations
+│   │   ├── facebook/
+│   │   │   ├── client.ts       # FB API client
+│   │   │   ├── auth.ts         # Authentication
+│   │   │   ├── insights.ts     # Performance data fetching
+│   │   │   └── publishing.ts   # Campaign publishing
+│   │   └── tiktok/             # Similar structure for TikTok
+│   │
+│   ├── agents/                 # Agent implementations
 │   │   ├── base/
 │   │   │   ├── agent.ts        # Base agent class
 │   │   │   └── types.ts        # Shared agent types
@@ -287,14 +301,6 @@ src/
 │   │       ├── generator.ts    # Campaign structure generator
 │   │       ├── asset-processor.ts # Image/video processing
 │   │       └── publisher.ts    # Campaign publishing
-│   │
-│   ├── platforms/              # Platform integrations
-│   │   ├── facebook/
-│   │   │   ├── client.ts       # FB API client
-│   │   │   ├── auth.ts         # Authentication
-│   │   │   ├── insights.ts     # Performance data fetching
-│   │   │   └── publishing.ts   # Campaign publishing
-│   │   └── tiktok/             # Similar structure for TikTok
 │   │
 │   ├── ai/                     # AI service integrations
 │   │   ├── openai.ts           # OpenAI client
@@ -396,6 +402,11 @@ The API follows a domain-driven design with these key characteristics:
    - Each platform has its own endpoints
    - Common patterns across platforms
 
+4. **Server Actions Optimization**
+   - Simple CRUD operations can bypass API routes using Server Actions
+   - Forms and basic data mutations can connect directly to server functions
+   - Reduces boilerplate while maintaining the same business logic
+
 ## Implementation Phases
 
 This structure can be implemented in phases:
@@ -472,6 +483,59 @@ This structure can be implemented in phases:
    - Asynchronous processing for intensive operations
    - Clear separation from web request handling
 
+7. **Server Actions Integration**
+   - Server functions can be defined directly in or near components using the `"use server"` directive
+   - Simple data mutations like form submissions can bypass API routes entirely
+   - The server-side business logic in `server/` remains the source of truth
+   - API routes still used for:
+     - Complex operations (agent processing, analytics)
+     - Endpoints used by multiple components
+     - Public APIs and webhooks
+   - Implementation pattern:
+     ```
+     // For simple operations
+     Component with form → Server Action → server/[domain]/service → Database
+     
+     // For complex operations (unchanged)
+     Component → Client API call → API Route → server/[domain]/service → Database
+     ```
+   - No changes to folder structure required, but reduces the need for simple API routes
+
+   8.  - **Development Utilities**
+     - Add a `scripts/` folder at the root level for development tooling:
+     ```
+     scripts/
+     ├── seed-data.ts        # Database seeding for development
+     ├── mock-agents.ts      # Simulate agent behavior for testing
+     ├── generate-types.ts   # Generate TypeScript types from database schema
+     └── reset-dev-env.ts    # Reset development environment
+     ```
+     - These utilities simplify common development tasks and ensure consistency
+   
+   - **Centralized Analytics**
+     - Create `lib/analytics.ts` as a single entry point for all analytics tracking:
+     ```typescript
+     // Example analytics abstraction
+     export const analytics = {
+       pageView: (path: string) => { /* implementation */ },
+       trackEvent: (name: string, properties?: Record<string, any>) => { /* implementation */ },
+       identifyUser: (userId: string, traits?: Record<string, any>) => { /* implementation */ }
+     };
+     ```
+     - Benefits include easier provider switching, consistent tracking patterns, and simplified debugging
+
+9. **Middleware Implementation**
+   - Single `middleware.ts` file at the project root processes all requests before they reach pages/API routes
+   - Used for cross-cutting concerns that should apply consistently across the application
+   - Implementation responsibilities:
+     - Authentication validation and route protection
+     - Adding security headers to all responses
+     - Logging and analytics tracking
+     - Rate limiting for API endpoints
+     - A/B testing and feature flag evaluation
+   - Runs completely outside of React component lifecycle (server-side only)
+   - Benefits include reduced code duplication, consistent behavior enforcement, and simplified authentication flows
+
 ## Future Considerations
 
 As the application scales, the following areas should be addressed:
@@ -514,3 +578,11 @@ As the application scales, the following areas should be addressed:
    - Add XSS prevention measures
    - Create sensitive data handling procedures
    - Integrate security scanning
+
+8. **Advanced Next.js Features**
+   - **Intercepting Routes**: For modal-like experiences when viewing details or previews
+   - **Parallel Routes**: For side-by-side comparison of campaigns or agent views
+   - **Edge Runtime**: For globally distributed low-latency API endpoints
+   - **Streaming with Suspense**: For progressively loading complex agent reports
+   - **View Transitions API**: For smooth navigation between related views
+
