@@ -108,6 +108,19 @@ src/
 │       ├── terms/
 │       └── data-deletion/
 │
+├── stores/                     # Zustand stores for complex state
+│   ├── index.ts                # Export all stores
+│   ├── campaign-creator.ts     # Campaign creator store
+│   ├── auth.ts                 # Authentication state
+│   ├── subscription.ts         # Subscription features/status
+│   └── preferences.ts          # User preferences
+│
+├── queries/                    # React Query configurations
+│   ├── index.ts                # Query client setup
+│   ├── channels.ts             # Channel-related queries
+│   ├── messages.ts             # Message-related queries
+│   └── agents.ts               # Agent-related queries
+│
 ├── components/                 # Reusable React components (improved structure)
 │   ├── ui/                     # Primitive UI components (atomic)
 │   │   ├── button/
@@ -306,19 +319,17 @@ src/
 │       └── metrics.ts          # Analytics helpers
 │
 ├── hooks/                      # Custom React hooks
-│   ├── use-channel.ts          # Channel data and operations
-│   ├── use-messages.ts         # Message handling
-│   ├── use-auth.ts             # Authentication state
-│   ├── use-subscription.ts     # Subscription state
-│   ├── use-agent.ts            # Agent interaction hook
-│   ├── use-error-handler.ts    # Error handling hook
-│   └── use-media-query.ts      # Responsive design helpers
+│   ├── use-channel.ts          # Uses React Query
+│   ├── use-messages.ts         # Uses React Query
+│   ├── use-auth.ts             # Uses Zustand
+│   ├── use-subscription.ts     # Uses Zustand
+│   ├── use-campaign-creator.ts # Uses Zustand
+│   ├── use-agent.ts            # Uses React Query
+│   ├── use-error-handler.ts    # Stays as React hook
+│   └── use-media-query.ts      # Stays as React hook
 │
-├── contexts/                   # React contexts
-│   ├── auth-context.tsx        # Authentication context
-│   ├── channel-context.tsx     # Current channel context
-│   ├── error-context.tsx       # Error handling context
-│   └── subscription-context.tsx # Subscription status
+├── contexts/                   # Reduced dependency on contexts
+│   └── error-context.tsx       # Keep for error handling
 │
 └── types/                      # TypeScript definitions
     ├── supabase.ts             # Generated Supabase types

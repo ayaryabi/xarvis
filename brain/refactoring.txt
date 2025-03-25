@@ -292,3 +292,42 @@ For each component category, implementation should follow this sequence:
    - Test and adjust as needed
 
 ###########
+
+
+
+
+
+
+
+
+
+
+src/
+├── components/
+│   ├── common/                  # Reusable design elements
+│   │   └── logo/                # Logo component
+│   │
+│   ├── features/                # Feature-specific components
+│   │   └── landing/             # Landing page feature components
+│   │
+│   ├── pages/                   # Page-specific components
+│   │   └── landing/             # Landing page sections
+│   │       ├── coming-soon.tsx
+│   │       ├── cost-comparison.tsx 
+│   │       ├── footer.tsx
+│   │       ├── hero.tsx
+│   │       ├── metrics.tsx
+│   │       ├── navbar.tsx
+│   │       └── results.tsx
+│   │
+│   └── ui/                      # Base UI components (atoms)
+│       ├── badge/
+│       ├── button/
+│       ├── card/
+│       ├── container/
+│       ├── heading/
+│       └── stat/
+│
+└── app/                         # Next.js app router
+    └── refactor/                # Refactor page
+        └── page.tsx             # Page that uses our components
