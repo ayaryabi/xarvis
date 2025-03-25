@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "./variants"
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "white" | "ghost" | "outline"
+  variant?: "white" | "ghost" | "outline" | "gradient"
   size?: "default" | "lg" | "xl" | "full"
   asChild?: boolean
 }

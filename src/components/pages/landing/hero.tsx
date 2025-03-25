@@ -34,9 +34,9 @@ export function HeroSection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             <Button 
-              variant="white"
-              className="bg-gradient-to-r from-[#ff6363] to-[#ff3939] hover:from-[#ff7373] hover:to-[#ff4949] text-white rounded-xl shadow-lg shadow-[#ff6363]/20 border border-[#ff6363]/20"
+              variant="gradient"
               size="xl"
+              className="rounded-xl"
             >
               <Download className="mr-2 h-5 w-5" />
               Install on Slack
