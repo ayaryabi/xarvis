@@ -3,6 +3,7 @@
 import { Navbar } from "@/components/pages/landing/navbar"
 import { HeroSection } from "@/components/pages/landing/hero"
 import { ResultsSection } from "@/components/pages/landing/results"
+import { MetricsSection } from "@/components/pages/landing/metrics"
 
 export default function RefactorPage() {
   return (
@@ -10,6 +11,7 @@ export default function RefactorPage() {
       <Navbar />
       <HeroSection />
       <ResultsSection />
+      <MetricsSection />
     </main>
   )
 }

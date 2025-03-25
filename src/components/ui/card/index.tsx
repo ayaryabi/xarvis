@@ -7,6 +7,7 @@ import { cardVariants } from "./variants"
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "feature" | "results"
   glowOnHover?: boolean
+  permanentGlow?: boolean
   glowColor?: string
   padding?: "none" | "sm" | "md" | "lg"
 }
@@ -15,7 +16,8 @@ export function Card({
   className,
   variant,
   glowOnHover = false,
-  glowColor = "from-[#ff6363] to-[#ff3939]",
+  permanentGlow = false,
+  glowColor = "from-[#ff6363]/30 to-[#ff3939]/30",
   padding = "md",
   children,
   ...props
@@ -29,10 +31,18 @@ export function Card({
 
   return (
     <div className="relative group">
-      {/* Glow effect */}
+      {/* Permanent glow effect - identical to results card */}
+      {permanentGlow && (
+        <div className={cn(
+          "absolute -inset-0.5 rounded-xl blur opacity-20 bg-gradient-to-r",
+          glowColor
+        )}></div>
+      )}
+      
+      {/* Hover glow effect */}
       {glowOnHover && (
         <div className={cn(
-          "absolute -inset-0.5 rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity bg-gradient-to-r",
+          "absolute -inset-0.5 rounded-xl blur opacity-0 group-hover:opacity-20 transition-opacity bg-gradient-to-r",
           glowColor
         )}></div>
       )}
