@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/pages/landing/hero"
 import { MetricsSection } from "@/components/pages/landing/metrics"
 import { ResultsSection } from "@/components/pages/landing/results"
 import { CostComparisonSection } from "@/components/pages/landing/cost-comparison"
+import { ComingSoonSection } from "@/components/pages/landing/coming-soon"
 
 export default function RefactorPage() {
   return (
@@ -14,6 +15,7 @@ export default function RefactorPage() {
       <MetricsSection />
       <ResultsSection />
       <CostComparisonSection />
+      <ComingSoonSection />
     </main>
   )
 }
