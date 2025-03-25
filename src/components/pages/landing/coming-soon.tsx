@@ -4,7 +4,6 @@ import React from "react"
 import { Container } from "@/components/ui/container/container"
 import { Card } from "@/components/ui/card"
 import { Star, Target, BarChart } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 interface IconProps {
   className?: string;

@@ -8,7 +8,6 @@ interface StatProps {
   before: string
   after: string
   change: string
-  changeType?: "positive" | "negative" | "neutral"
   className?: string
 }
 
@@ -17,7 +16,6 @@ export function Stat({
   before,
   after,
   change,
-  changeType = "positive",
   className
 }: StatProps) {
   return (

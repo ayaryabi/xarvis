@@ -4,7 +4,6 @@ import React from "react"
 import { Container } from "@/components/ui/container/container"
 import { Logo } from "@/components/common/logo"
 import { Linkedin, Instagram, Youtube } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 interface FooterLinkProps {
   href: string

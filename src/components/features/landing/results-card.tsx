@@ -1,11 +1,10 @@
 "use client"
 
+import React from "react"
 import { cn } from "@/lib/utils"
 import { Card } from "@/components/ui/card"
 import { Stat } from "@/components/ui/stat"
-import { DollarSign, Shield, ArrowRight, ArrowUpRight, PieChart, TrendingUp } from "lucide-react"
-import { motion } from "framer-motion"
-import { Heading } from "@/components/ui/heading"
+import { DollarSign, Shield } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 interface ResultsCardProps {
@@ -81,7 +80,6 @@ export function ResultsCard({
                 before="4 hours"
                 after="10 min"
                 change="-96%"
-                changeType="positive"
               />
               
               <Stat
@@ -89,7 +87,6 @@ export function ResultsCard({
                 before="1.8x"
                 after="2.4x"
                 change="+33%"
-                changeType="positive"
               />
             </div>
           </div>

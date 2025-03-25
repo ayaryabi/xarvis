@@ -2,7 +2,7 @@
 
 import { Container } from "@/components/ui/container/container"
 import { Button } from "@/components/ui/button"
-import { Users, Lightbulb, BarChart, BookOpen, Zap, Eye, Activity, Box, Bolt } from "lucide-react"
+import { Users, Lightbulb, BarChart, BookOpen, Zap, Eye, Box, Bolt } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function CostComparisonSection() {
