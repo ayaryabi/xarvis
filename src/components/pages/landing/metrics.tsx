@@ -59,21 +59,18 @@ function MetricCard({ title, description, icon, index, className }: MetricCardPr
       }}
     >
       <div className="relative mb-8">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff6363]/30 to-[#ff3939]/30 rounded-xl blur opacity-20"></div>
-        
         <Card 
-          variant="results"
-          padding="lg"
-          className="relative bg-[rgba(30,0,0,0.8)]"
-          glowOnHover={false}
-          permanentGlow={false}
+          className="relative bg-[rgba(40,0,0,0.8)] p-8" 
+          glowOnHover={true}
+          permanentGlow={true}
+          glowColor="from-[#ff6363]/40 to-[#ff3939]/40"
         >
           <div className="flex justify-between items-center">
             <div>
               <h3 className="text-4xl font-bold mb-2">{title}</h3>
               <p className="text-gray-400 text-lg">{description}</p>
             </div>
-            <div className="h-16 w-16 rounded-full bg-[rgba(50,0,0,0.6)] border border-[#ff6363]/30 flex items-center justify-center text-[#ff6363]">
+            <div className="h-16 w-16 rounded-full bg-[rgba(80,0,0,0.4)] border border-[#ff6363]/50 flex items-center justify-center text-[#ff6363]">
               {React.isValidElement<ClassNameProps>(icon) && 
                 React.cloneElement(icon, { 
                   className: "h-8 w-8" 
