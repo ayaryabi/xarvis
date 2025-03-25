@@ -6,6 +6,7 @@ import { MetricsSection } from "@/components/pages/landing/metrics"
 import { ResultsSection } from "@/components/pages/landing/results"
 import { CostComparisonSection } from "@/components/pages/landing/cost-comparison"
 import { ComingSoonSection } from "@/components/pages/landing/coming-soon"
+import { Footer } from "@/components/pages/landing/footer"
 
 export default function RefactorPage() {
   return (
@@ -16,6 +17,7 @@ export default function RefactorPage() {
       <ResultsSection />
       <CostComparisonSection />
       <ComingSoonSection />
+      <Footer />
     </main>
   )
 }
