@@ -43,7 +43,6 @@ src/
 ├── app/                        # Next.js 13+ App Router
 │   ├── layout.tsx              # Root layout (minimal, shared across all pages)
 │   ├── globals.css             # Global styles
-│   ├── page.tsx                # Landing page route (marketing content)
 │   │
 │   ├── (auth)/                 # Authentication routes (grouped)
 │   │   ├── login/
@@ -78,6 +77,24 @@ src/
 │   │   │
 │   │   └── marketplace/        # Agent marketplace
 │   │       └── page.tsx
+│   │
+│   ├── (marketing)/            # Marketing and legal pages (grouped)
+│   │   ├── layout.tsx          # Marketing layout with shared elements
+│   │   ├── page.tsx            # Landing page (home)
+│   │   ├── pricing/            # Pricing page
+│   │   │   └── page.tsx
+│   │   ├── about/              # About us page
+│   │   │   └── page.tsx
+│   │   ├── contact/            # Contact page
+│   │   │   └── page.tsx
+│   │   │
+│   │   └── legal/              # Legal pages
+│   │       ├── privacy/
+│   │       │   └── page.tsx    # Privacy policy
+│   │       ├── terms/
+│   │       │   └── page.tsx    # Terms of service
+│   │       └── data-deletion/
+│   │           └── page.tsx    # Data deletion policy
 │   │
 │   ├── api/                    # API routes (enhanced for agents)
 │   │   ├── auth/               # Auth related endpoints

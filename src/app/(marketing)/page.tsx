@@ -8,7 +8,7 @@ import { CostComparisonSection } from "@/components/pages/landing/cost-compariso
 import { ComingSoonSection } from "@/components/pages/landing/coming-soon"
 import { Footer } from "@/components/pages/landing/footer"
 
-export default function RefactorPage() {
+export default function HomePage() {
   return (
     <main className="min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />
@@ -20,4 +20,4 @@ export default function RefactorPage() {
       <Footer />
     </main>
   )
-}
+} 

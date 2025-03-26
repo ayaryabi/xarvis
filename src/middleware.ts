@@ -9,6 +9,9 @@ export default authMiddleware({
     "/api/webhooks",
     "/api/webhooks/clerk",
     "/refactor",
+    "/privacy",
+    "/terms",
+    "/data-deletion",
   ],
 });
 

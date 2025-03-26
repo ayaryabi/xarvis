@@ -1,19 +1,16 @@
+"use client"
+
 import Link from "next/link"
+import { Navbar } from "@/components/pages/landing/navbar"
+import { Footer } from "@/components/pages/landing/footer"
 
 export default function Terms() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-4 py-24">
+    <main className="min-h-screen bg-black text-white overflow-x-hidden">
+      <Navbar />
+      
+      <div className="container mx-auto px-4 py-24 mt-16">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <Link href="/" className="text-[#ff6363] hover:underline flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-              Back to Home
-            </Link>
-          </div>
-          
           <h1 className="text-4xl font-bold mb-6">Terms of Service</h1>
           <p className="text-gray-400 mb-12">Effective Date: March 10, 2025</p>
           
@@ -83,17 +80,10 @@ export default function Terms() {
               </p>
             </section>
           </div>
-          
-          <div className="mt-16 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-            <p>© 2025 XARVIS. All rights reserved.</p>
-            <div className="flex justify-center gap-4 mt-4">
-              <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
-              <Link href="/terms" className="hover:text-white">Terms of Service</Link>
-              <Link href="/data-deletion" className="hover:text-white">Data Deletion</Link>
-            </div>
-          </div>
         </div>
       </div>
-    </div>
+      
+      <Footer />
+    </main>
   )
 } 
