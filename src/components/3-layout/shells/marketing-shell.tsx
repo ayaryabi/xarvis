@@ -1,8 +1,8 @@
 "use client"
 
-import React from 'react'
-import { MarketingNavbar } from "@/components/layout/navigation/marketing-navbar"
-import { MarketingFooter } from "@/components/layout/footer/marketing-footer"
+import { ReactNode } from "react"
+import { MarketingNavbar } from "@/components/3-layout/navigation/marketing-navbar"
+import { MarketingFooter } from "@/components/3-layout/footer/marketing-footer"
 
 export function MarketingShell({ children }: { children: React.ReactNode }) {
   return (

@@ -1,8 +1,8 @@
 "use client"
 
-import React from "react"
-import { Container } from "@/components/ui/container/container"
-import { Logo } from "@/components/common/logo"
+import Link from "next/link"
+import { Container } from "@/components/0-ui/container/container"
+import { Logo } from "@/components/1-common/logo"
 import { Linkedin, Instagram, Youtube } from "lucide-react"
 
 interface FooterLinkProps {

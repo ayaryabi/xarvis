@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { Card } from "@/components/ui/card"
+import { Card } from "@/components/0-ui/card"
 import { useEffect, useRef, useState } from "react"
 
 interface FeatureCardProps {

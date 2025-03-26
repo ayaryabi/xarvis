@@ -1,4 +1,4 @@
-import { MarketingShell } from '@/components/layout/shells/marketing-shell'
+import { MarketingShell } from '@/components/3-layout/shells/marketing-shell'
 
 export default function MarketingLayout({
   children,

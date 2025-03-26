@@ -1,6 +1,6 @@
 "use client"
 
-import { Logo } from "@/components/common/logo"
+import { Logo } from "@/components/1-common/logo"
 
 interface VersionTagProps {
   version: string

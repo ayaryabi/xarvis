@@ -1,7 +1,7 @@
 "use client"
 
-import { Container } from "@/components/ui/container/container"
-import { Button } from "@/components/ui/button"
+import { Container } from "@/components/0-ui/container/container"
+import { Button } from "@/components/0-ui/button"
 import { Users, Lightbulb, BarChart, BookOpen, Zap, Eye, Box, Bolt } from "lucide-react"
 import { cn } from "@/lib/utils"
 

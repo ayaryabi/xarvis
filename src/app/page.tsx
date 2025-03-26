@@ -1,8 +1,8 @@
 "use client"
 
-import { HomeContent } from "@/components/pages/marketing/home-content"
-import { MarketingNavbar } from "@/components/layout/navigation/marketing-navbar"
-import { MarketingFooter } from "@/components/layout/footer/marketing-footer"
+import { HomeContent } from "@/components/4-pages/marketing/home-content"
+import { MarketingNavbar } from "@/components/3-layout/navigation/marketing-navbar"
+import { MarketingFooter } from "@/components/3-layout/footer/marketing-footer"
 
 export default function RootPage() {
   return (

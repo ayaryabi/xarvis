@@ -1,11 +1,11 @@
 "use client"
 
-import React from "react"
+import { ReactNode } from "react"
+import { ArrowUpRight, DollarSign, Shield } from "lucide-react"
+import { Card } from "@/components/0-ui/card"
+import { Stat } from "@/components/0-ui/stat"
 import { cn } from "@/lib/utils"
-import { Card } from "@/components/ui/card"
-import { Stat } from "@/components/ui/stat"
-import { DollarSign, Shield } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/0-ui/badge"
 
 interface ResultsCardProps {
   className?: string

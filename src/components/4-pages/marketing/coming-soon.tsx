@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import { Container } from "@/components/ui/container/container"
-import { Card } from "@/components/ui/card"
+import { Container } from "@/components/0-ui/container/container"
+import { Card } from "@/components/0-ui/card"
 import { Star, Target, BarChart } from "lucide-react"
 
 interface IconProps {
