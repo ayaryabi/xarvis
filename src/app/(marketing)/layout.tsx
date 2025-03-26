@@ -1,4 +1,5 @@
-import { MarketingShell } from '@/components/layout/shells/marketing-shell'
+import { MarketingNavbar } from '@/components/layout/navigation/marketing-navbar'
+import { MarketingFooter } from '@/components/layout/footer/marketing-footer'
 
 export default function MarketingLayout({
   children,
@@ -6,8 +7,10 @@ export default function MarketingLayout({
   children: React.ReactNode
 }) {
   return (
-    <MarketingShell>
+    <main className="min-h-screen bg-black text-white overflow-x-hidden">
+      <MarketingNavbar />
       {children}
-    </MarketingShell>
+      <MarketingFooter />
+    </main>
   )
 } 
