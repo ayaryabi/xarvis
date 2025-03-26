@@ -184,13 +184,15 @@ src/
 │   │   │   ├── channel-tabs.tsx # Channel top navigation
 │   │   │   └── mobile-nav.tsx  # Mobile navigation
 │   │   │
+│   │   ├── footer/            # Footer elements
+│   │   │   └── marketing-footer.tsx # Marketing page footer
+│   │   │
 │   │   ├── shells/            # Layout shells
 │   │   │   ├── dashboard-shell.tsx # Dashboard layout shell
 │   │   │   ├── auth-shell.tsx  # Authentication page shell
 │   │   │   └── marketing-shell.tsx # Marketing page shell
 │   │   │
-│   │   ├── header.tsx         # App header
-│   │   └── footer.tsx         # App footer
+│   │   └── header.tsx         # App header
 │   │
 │   ├── common/                # Composite components used across features
 │   │   ├── data-display/      # Data presentation components

@@ -1,12 +1,12 @@
 "use client"
 
-import { Navbar } from "@/components/pages/landing/navbar"
-import { HeroSection } from "@/components/pages/landing/hero"
-import { MetricsSection } from "@/components/pages/landing/metrics"
-import { ResultsSection } from "@/components/pages/landing/results"
-import { CostComparisonSection } from "@/components/pages/landing/cost-comparison"
-import { ComingSoonSection } from "@/components/pages/landing/coming-soon"
-import { Footer } from "@/components/pages/landing/footer"
+import { Navbar } from "@/components/pages/marketing/navbar"
+import { HeroSection } from "@/components/pages/marketing/hero"
+import { MetricsSection } from "@/components/pages/marketing/metrics"
+import { ResultsSection } from "@/components/pages/marketing/results"
+import { CostComparisonSection } from "@/components/pages/marketing/cost-comparison"
+import { ComingSoonSection } from "@/components/pages/marketing/coming-soon"
+import { Footer } from "@/components/pages/marketing/footer"
 
 export default function HomePage() {
   return (
