@@ -1,4 +1,4 @@
-import { Sidebar } from "@/components/sidebar"
+import { Sidebar } from "@/components/old/sidebar"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 
 interface MobileNavProps {

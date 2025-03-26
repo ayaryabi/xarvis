@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Sidebar } from "@/components/sidebar"
-import { ChatArea } from "@/components/chat-area"
-import { Header } from "@/components/header"
+import { Sidebar } from "@/components/old/sidebar"
+import { ChatArea } from "@/components/old/chat-area"
+import { Header } from "@/components/old/header"
 import { useMobile } from "@/hooks/use-mobile"
 
 export function SlackInterface() {

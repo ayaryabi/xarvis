@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge"
 import { Heading } from "@/components/ui/heading"
 import { GradientBackground } from "@/components/common/gradients/background"
 import { VersionTag } from "@/components/features/version-tag"
-import { MacWindow } from "@/components/mac-window"
-import { SlackInterface } from "@/components/slack-interface"
+import { MacWindow } from "@/components/old/mac-window"
+import { SlackInterface } from "@/components/old/slack-interface"
 import { Download } from "lucide-react"
 
 export function HeroSection() {

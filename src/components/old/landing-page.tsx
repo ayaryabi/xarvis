@@ -3,10 +3,10 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { MacWindow } from "@/components/mac-window"
-import { SlackInterface } from "@/components/slack-interface"
+import { MacWindow } from "@/components/old/mac-window"
+import { SlackInterface } from "@/components/old/slack-interface"
 import { Button } from "@/components/ui/button"
-import { CostComparisonSection } from "@/components/cost-comparison"
+import { CostComparisonSection } from "@/components/old/cost-comparison"
 import {
   ChevronRight,
   Download,
