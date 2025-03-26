@@ -34,7 +34,7 @@ export function Logo({
       className
     )}>
       <img 
-        src="/logo_1.png" 
+        src="/logo.png" 
         alt="XARVIS" 
         className="h-full w-full object-cover" 
       />

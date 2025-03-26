@@ -148,7 +148,7 @@ function AgentShowcase() {
                   <div className="relative mr-5">
                     <div className="h-16 w-16 rounded-full overflow-hidden bg-black border border-white/10">
                       <div className="h-full w-full subtle-glow flex items-center justify-center">
-                        <img src="/agent_orion.png" alt="Agent Orion" className="h-14 w-14 object-contain" />
+                        <img src="/logo.png" alt="XARVIS" className="h-14 w-14 object-contain" />
                       </div>
                     </div>
                   </div>
@@ -260,7 +260,7 @@ export function LandingPage() {
         >
           <div className="flex items-center">
             <div className="h-8 w-8 rounded-full flex items-center justify-center mr-3 overflow-hidden holographic-shimmer">
-              <img src="/logo_1.png" alt="XARVIS" className="h-8 w-8 object-cover" />
+              <img src="/logo.png" alt="XARVIS" className="h-8 w-8 object-cover" />
             </div>
             <span className="font-bold text-xl">XARVIS</span>
           </div>
@@ -363,7 +363,7 @@ export function LandingPage() {
               <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/40 backdrop-blur-xl text-sm text-gray-400 px-6 py-2 rounded-full border border-white/10 shadow-lg">
                 <div className="flex items-center space-x-2 text-xs text-gray-500">
                   <div className="h-4 w-4 rounded-full overflow-hidden holographic-shimmer">
-                    <img src="/logo_1.png" alt="XARVIS" className="h-4 w-4 object-cover" />
+                    <img src="/logo.png" alt="XARVIS" className="h-4 w-4 object-cover" />
                   </div>
                   <span>v1.0.2 • Install via Slack App Directory</span>
                 </div>
@@ -661,7 +661,7 @@ export function LandingPage() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-6 md:mb-0">
               <div className="h-8 w-8 rounded-full flex items-center justify-center mr-2 overflow-hidden holographic-shimmer">
-                <img src="/logo_1.png" alt="XARVIS" className="h-8 w-8 object-cover" />
+                <img src="/logo.png" alt="XARVIS" className="h-8 w-8 object-cover" />
               </div>
               <span className="font-bold text-xl">XARVIS</span>
             </div>
