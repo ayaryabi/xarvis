@@ -1,7 +1,7 @@
 "use client"
 
 import { Clock, HelpCircle, Bell, Menu } from "lucide-react"
-import { Button } from "@/components/0-ui/button"
+import { Button } from "@/components/old/button"
 
 interface HeaderProps {
   onMenuClick: () => void

@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import { MacWindow } from "@/components/old/mac-window"
 import { SlackInterface } from "@/components/old/slack-interface"
-import { Button } from "@/components/0-ui/button"
+import { Button } from "@/components/old/button"
 import { CostComparisonSection } from "@/components/old/cost-comparison"
 import {
   ChevronRight,

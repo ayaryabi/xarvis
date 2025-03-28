@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/old/sidebar"
-import { Sheet, SheetContent } from "@/components/0-ui/sheet"
+import { Sheet, SheetContent } from "@/components/old/sheet"
 
 interface MobileNavProps {
   isOpen: boolean
