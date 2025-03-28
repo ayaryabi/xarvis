@@ -29,7 +29,7 @@ export function MarketingNavbar() {
       >
         <div className="flex items-center">
           <Logo className="mr-3" effect="holographic" />
-          <span className="font-bold text-xl">XARVIS</span>
+          <span className="font-bold text-xl">XAVRIS</span>
         </div>
 
         <nav className="hidden md:flex items-center space-x-10">
