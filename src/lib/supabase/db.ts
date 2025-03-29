@@ -152,7 +152,7 @@ export async function createUserWithOrganization(userData: {
 }) {
   const organizationName = userData.organization_name || `${userData.name}'s Organization`;
   
-  // Start a transaction by using a single callback
+  // create a user in supabase
   const user = await users.create(userData);
   
   // Create organization
