@@ -11,7 +11,7 @@ export interface User {
 export interface Organization {
   id: string;
   name: string;
-  settings: Record<string, any>;
+  settings: Record<string, string | number | boolean | null>;
   created_at: string;
   updated_at: string;
 }
@@ -40,9 +40,9 @@ export interface SubscriptionPlan {
         daily_reports: number;
         monitored_accounts: number;
       };
-      [key: string]: any;
+      [key: string]: Record<string, number>;
     };
-    [key: string]: any;
+    [key: string]: number | Record<string, number | Record<string, number>>;
   };
   is_active: boolean;
   created_at: string;

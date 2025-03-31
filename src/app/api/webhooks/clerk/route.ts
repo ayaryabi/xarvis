@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { WebhookEvent } from '@clerk/nextjs/server';
 
 import { createUserWithOrganization } from '@/lib/supabase/db';
-import { getOrCreateUser, updateUserProfile } from '@/lib/supabase/auth';
+import { updateUserProfile } from '@/lib/supabase/auth';
 
 export async function POST(req: Request) {
   // Get the headers

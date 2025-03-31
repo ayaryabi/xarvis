@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Xarvis',
   description: 'Your AI-powered assistant',
+  icons: {
+    icon: '/xarvis_logo_2.png',
+    apple: '/xarvis_logo_2.png',
+  },
 }
 
 export default function RootLayout({

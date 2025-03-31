@@ -58,7 +58,7 @@ export const organizations = {
   // Create a new organization
   async create(organizationData: {
     name: string;
-    settings?: Record<string, any>;
+    settings?: Record<string, string | number | boolean | null>;
   }) {
     const { data, error } = await supabaseAdmin
       .from('organizations')

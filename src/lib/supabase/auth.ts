@@ -1,4 +1,3 @@
-import { supabaseAdmin } from './client';
 import { users } from './db';
 import type { User } from './types';
 
@@ -65,7 +64,7 @@ export async function updateUserProfile(clerkUser: {
       .filter(Boolean)
       .join(' ');
     
-    const updates: Record<string, any> = {};
+    const updates: Record<string, string> = {};
     
     if (primaryEmail && primaryEmail !== existingUser.email) {
       updates.email = primaryEmail;
