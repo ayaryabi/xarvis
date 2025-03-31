@@ -1,6 +1,5 @@
 "use client"
 
-import { ReactNode } from "react"
 import { MarketingNavbar } from "@/components/layout/navigation/marketing-navbar"
 import { MarketingFooter } from "@/components/layout/footer/marketing-footer"
 

@@ -12,6 +12,7 @@ export function ResultsSection() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const currentRef = containerRef.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -23,13 +24,13 @@ export function ResultsSection() {
       }
     )
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current)
+    if (currentRef) {
+      observer.observe(currentRef)
     }
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
     }
   }, [])

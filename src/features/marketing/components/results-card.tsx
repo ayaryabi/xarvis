@@ -1,13 +1,11 @@
 "use client"
 
-import { ReactNode } from "react"
-import { ArrowUpRight, DollarSign, Shield } from "lucide-react"
+import { DollarSign, Shield } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Stat } from "@/components/ui/stat"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import { useRef, useEffect, useState } from "react"
-import { LucideIcon } from "lucide-react"
+import Image from "next/image"
 
 interface ResultsCardProps {
   className?: string
@@ -45,7 +43,13 @@ export function ResultsCard({
             <div className="relative mr-5">
               <div className="h-16 w-16 rounded-full overflow-hidden bg-black border border-white/10">
                 <div className="h-full w-full subtle-glow flex items-center justify-center">
-                  <img src="/agent_orion.png" alt="Agent Orion" className="h-14 w-14 object-contain" />
+                  <Image 
+                    src="/agent_orion.png" 
+                    alt="Agent Orion" 
+                    width={56}
+                    height={56}
+                    className="object-contain" 
+                  />
                 </div>
               </div>
             </div>

@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { Container } from "@/components/ui/container/container"
 import { Logo } from "@/components/common/logo"
 import { Linkedin, Instagram, Youtube } from "lucide-react"

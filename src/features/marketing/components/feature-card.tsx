@@ -1,9 +1,8 @@
 "use client"
 
-import { cn } from "@/lib/utils"
-import { LucideIcon } from "lucide-react"
+import { useState, useRef, useEffect } from "react"
 import { Card } from "@/components/ui/card"
-import { useEffect, useRef, useState } from "react"
+import { cn } from "@/lib/utils"
 
 interface FeatureCardProps {
   number: number
@@ -24,6 +23,7 @@ export function FeatureCard({
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const currentRef = ref.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -35,13 +35,13 @@ export function FeatureCard({
       }
     )
 
-    if (ref.current) {
-      observer.observe(ref.current)
+    if (currentRef) {
+      observer.observe(currentRef)
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
     }
   }, [])

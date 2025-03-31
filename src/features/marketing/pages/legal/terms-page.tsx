@@ -1,7 +1,5 @@
 "use client"
 
-import Link from "next/link"
-
 export default function TermsPage() {
   return (
     <div className="container mx-auto px-4 py-24 mt-16">
