@@ -2,10 +2,12 @@
 
 import { ReactNode } from "react"
 import { ArrowUpRight, DollarSign, Shield } from "lucide-react"
-import { Card } from "@/components/0-ui/card"
-import { Stat } from "@/components/0-ui/stat"
+import { Card } from "@/components/ui/card"
+import { Stat } from "@/components/ui/stat"
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/0-ui/badge"
+import { Badge } from "@/components/ui/badge"
+import { useRef, useEffect, useState } from "react"
+import { LucideIcon } from "lucide-react"
 
 interface ResultsCardProps {
   className?: string

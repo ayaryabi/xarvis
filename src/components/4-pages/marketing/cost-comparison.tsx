@@ -1,7 +1,7 @@
 "use client"
 
-import { Container } from "@/components/0-ui/container/container"
-import { Button } from "@/components/0-ui/button/index"
+import { Container } from "@/components/ui/container/container"
+import { Button } from "@/components/ui/button/index"
 import { Users, Lightbulb, BarChart, BookOpen, Zap, Eye, Box, Bolt } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -126,7 +126,7 @@ export function CostComparisonSection() {
         </div>
         
         <div className="mt-12 flex flex-col items-center">
-          <Button variant="default" size="lg" className="px-8 bg-gradient-to-r from-[#ff6363] to-[#ff3939] text-white hover:from-[#ff7373] hover:to-[#ff4949]">
+          <Button variant="gradient" size="lg" className="px-8 bg-gradient-to-r from-[#ff6363] to-[#ff3939] text-white hover:from-[#ff7373] hover:to-[#ff4949]">
             Hire XARVIS and His Crew →
           </Button>
           <p className="text-sm text-gray-400 mt-4">

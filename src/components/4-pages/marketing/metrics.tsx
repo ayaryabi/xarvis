@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Container } from "@/components/0-ui/container/container"
-import { Card } from "@/components/0-ui/card"
+import { Container } from "@/components/ui/container/container"
+import { Card } from "@/components/ui/card"
 import { Clock, TrendingUp, DollarSign } from "lucide-react"
 import { cn } from "@/lib/utils"
 import React from "react"

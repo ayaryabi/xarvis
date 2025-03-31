@@ -2,9 +2,9 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { Button } from "@/components/0-ui/button/index"
-import { Container } from "@/components/0-ui/container/container"
-import { Logo } from "@/components/1-common/logo"
+import { Button } from "@/components/ui/button/index"
+import { Container } from "@/components/ui/container/container"
+import { Logo } from "@/components/common/logo"
 import { Menu, X } from "lucide-react"
 
 export function MarketingNavbar() {

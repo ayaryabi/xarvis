@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Container } from "@/components/0-ui/container/container"
-import { Heading } from "@/components/0-ui/heading"
+import { Container } from "@/components/ui/container/container"
+import { Heading } from "@/components/ui/heading"
 import { ResultsCard } from "@/components/2-features/landing/results-card"
 import { FeatureCard } from "@/components/2-features/landing/feature-card"
 import { Eye, Zap, Activity } from "lucide-react"
