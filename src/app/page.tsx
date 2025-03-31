@@ -1,6 +1,6 @@
 "use client"
 
-import { HomeContent } from "@/components/4-pages/marketing/home-content"
+import { HomeContent } from "@/features/marketing/pages/home-content"
 import { MarketingNavbar } from "@/components/layout/navigation/marketing-navbar"
 import { MarketingFooter } from "@/components/layout/footer/marketing-footer"
 
