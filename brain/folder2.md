@@ -2,18 +2,126 @@
 
 ## Table of Contents
 - [Overview](#overview)
+- [Architecture Principles](#architecture-principles)
 - [Folder Structure](#folder-structure)
   - [Root Structure](#root-structure)
   - [Source Code Structure](#source-code-structure)
 - [State Management](#state-management)
+- [Data Flow](#data-flow)
 - [API Structure](#api-structure)
 - [Implementation Phases](#implementation-phases)
 - [Key Architecture Decisions](#key-architecture-decisions)
+- [Development Guidelines](#development-guidelines)
 - [Future Considerations](#future-considerations)
 
 ## Overview
 
-XARVIS is a multi-tenant SaaS application for AI-powered ad campaign management with a modern Next.js architecture. This architecture uses a feature-based organization approach while maintaining shared component libraries.
+XARVIS is a multi-tenant SaaS application for AI-powered ad campaign management with a modern Next.js architecture. This architecture uses a feature-based organization approach while maintaining shared component libraries. The application is designed to be scalable, maintainable, and performant, with clear separation of concerns and domain-driven design principles.
+
+## Architecture Principles
+
+1. **Feature-First Organization**
+   - Each feature is self-contained with its own components, hooks, and API
+   - Features can be developed and tested independently
+   - Clear boundaries between features reduce coupling
+
+2. **Shared Resources**
+   - UI components are centralized for consistency
+   - Common utilities and types are shared across features
+   - Server-side code is isolated from client features
+
+3. **Data Management**
+   - Server state: React Query for data fetching and caching
+   - Client state: Zustand for UI state management
+   - Clear separation between server and client state
+
+4. **Type Safety**
+   - TypeScript throughout the application
+   - Shared type definitions between client and server
+   - Generated types for database and API responses
+
+5. **Performance Optimization**
+   - Code splitting by feature
+   - Optimized data fetching with React Query
+   - Server components where possible
+
+## Important Notes
+
+### Feature Organization
+- Each feature (auth, marketing, channels, etc.) has its own directory with:
+  - Components: Feature-specific UI components
+  - Hooks: Feature-specific custom hooks
+  - API: Feature-specific API functions
+  - Types: Feature-specific type definitions
+  - Stores: Feature-specific state management (when needed)
+  - Layouts: Feature-specific layouts (when needed)
+  - Pages: Feature-specific page components
+
+### Key Guidelines
+1. **Component Organization**
+   - Shared UI components go in `components/`
+   - Feature-specific components go in `features/[feature-name]/components/`
+     Example: `features/auth/components/`, `features/channels/components/`
+   - Keep components focused and reusable
+
+2. **State Management**
+   - Use React Query for server data
+   - Use Zustand for global UI state
+   - Use React state for component state
+   - Avoid prop drilling
+
+3. **API Structure**
+   - Feature-specific API calls in `features/[feature]/api/`
+   - Shared API utilities in `lib/api/`
+   - Server-side API routes in `app/api/`
+
+4. **Type Definitions**
+   - Feature-specific types in `features/[feature]/types/`
+   - Shared types in `types/`
+   - Generated types (e.g., Supabase) in `types/`
+
+5. **File Naming**
+   - Use kebab-case for file names
+   - Use PascalCase for component names
+   - Use camelCase for hooks and utilities
+   - Use index.ts for clean exports
+
+6. **Code Organization**
+   - Keep related code together
+   - Use index.ts files for clean exports
+   - Follow the established directory structure
+   - Keep features self-contained
+
+### Best Practices
+1. **Feature Development**
+   - Start with types and API
+   - Build components from primitives
+   - Add hooks for data management
+   - Implement pages last
+
+2. **Component Creation**
+   - Start with primitive UI components
+   - Build composite components from primitives
+   - Keep components focused and reusable
+   - Use TypeScript for all components
+
+3. **State Management**
+   - Use React Query for server data
+   - Use Zustand for global UI state
+   - Use React state for component state
+   - Avoid prop drilling
+
+4. **API Development**
+   - Create feature-specific API modules
+   - Use TypeScript for API types
+   - Implement proper error handling
+   - Follow REST/GraphQL conventions
+
+5. **Testing**
+   - Unit tests for utilities
+   - Component tests for UI
+   - Integration tests for features
+   - E2E tests for critical flows
 
 ## Folder Structure
 
@@ -277,18 +385,118 @@ src/
 
 XARVIS uses a hybrid approach to state management:
 
-1. **Zustand** for complex UI state
-   - Stores are located within feature folders (e.g., `features/auth/stores/auth-store.ts`)
-   - Each feature manages its own state
-   - Features can access state from other features when needed
+1. **Server State (React Query)**
+   ```typescript
+   // Example of a feature-specific query
+   const { data: channels } = useQuery({
+     queryKey: ['channels'],
+     queryFn: () => channelsApi.getChannels()
+   });
+   ```
+   - Handles all server data fetching
+   - Automatic caching and revalidation
+   - Optimistic updates
+   - Background data synchronization
 
-2. **React Query** for server data
-   - API interactions are organized within feature folders (e.g., `features/channels/api/channels-api.ts`)
-   - Each feature defines its own queries and mutations
+2. **Client State (Zustand)**
+   ```typescript
+   // Example of a feature-specific store
+   interface UIState {
+     isSidebarOpen: boolean;
+     selectedTab: string;
+     setSidebarOpen: (open: boolean) => void;
+   }
+   
+   export const useUIStore = create<UIState>((set) => ({
+     isSidebarOpen: true,
+     selectedTab: 'overview',
+     setSidebarOpen: (open) => set({ isSidebarOpen: open })
+   }));
+   ```
+   - UI-only state (modals, forms, etc.)
+   - No server synchronization needed
+   - Simple and lightweight
 
-3. **React's Built-in Hooks** for simple component state
-   - For UI toggles and form inputs
-   - Component-specific temporary states
+3. **Component State (React Hooks)**
+   ```typescript
+   // Example of component-specific state
+   function FormComponent() {
+     const [isSubmitting, setIsSubmitting] = useState(false);
+     const [formData, setFormData] = useState({});
+   }
+   ```
+   - Temporary UI state
+   - Form inputs
+   - Component-specific toggles
+
+## Data Flow
+
+1. **Data Fetching**
+   ```typescript
+   // Feature-specific API module
+   export const channelsApi = {
+     getChannels: async () => {
+       const response = await fetch('/api/channels');
+       return response.json();
+     }
+   };
+   
+   // Feature-specific hook
+   export function useChannels() {
+     return useQuery({
+       queryKey: ['channels'],
+       queryFn: channelsApi.getChannels
+     });
+   }
+   ```
+
+2. **Data Mutations**
+   ```typescript
+   // Example of a mutation
+   const mutation = useMutation({
+     mutationFn: (newChannel) => channelsApi.createChannel(newChannel),
+     onSuccess: () => {
+       queryClient.invalidateQueries({ queryKey: ['channels'] });
+     }
+   });
+   ```
+
+3. **Real-time Updates**
+   - Supabase subscriptions for real-time data
+   - WebSocket connections for live features
+   - Background polling where appropriate
+
+## Development Guidelines
+
+1. **Feature Development**
+   - Create new features in the `features/` directory
+   - Follow the established directory structure
+   - Keep feature-specific code isolated
+   - Use shared components when possible
+
+2. **Component Creation**
+   - Start with primitive UI components
+   - Build composite components from primitives
+   - Keep components focused and reusable
+   - Use TypeScript for all components
+
+3. **State Management**
+   - Use React Query for server data
+   - Use Zustand for global UI state
+   - Use React state for component state
+   - Avoid prop drilling
+
+4. **API Development**
+   - Create feature-specific API modules
+   - Use TypeScript for API types
+   - Implement proper error handling
+   - Follow REST/GraphQL conventions
+
+5. **Testing**
+   - Unit tests for utilities
+   - Component tests for UI
+   - Integration tests for features
+   - E2E tests for critical flows
 
 ## API Structure
 
@@ -380,3 +588,16 @@ As the application grows, consider these enhancements:
    - Clear boundaries for code ownership
 
 This architecture provides a scalable foundation for XARVIS as it grows to support multiple agents and a large user base.
+
+## Data Fetching
+
+XARVIS uses React Query for all server data:
+
+1. **Central Configuration**
+   - Query client setup in `src/lib/react-query/client.ts`
+   - Global defaults and configuration
+
+2. **Feature-Specific Queries**
+   - Each feature defines its query configurations
+   - Located in `features/[feature]/api/queries.ts`
+   - Defines query keys, prefetching, and invalidation
