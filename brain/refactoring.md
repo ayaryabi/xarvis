@@ -263,3 +263,117 @@ As you continue building the application:
 2. **Dashboard Implementation** should follow the same pattern
 3. **Subscription Feature** will need to be built next
 4. **Facebook Authentication** can be implemented as a feature or part of a larger connections feature
+
+## Post-Refactoring Roadmap
+
+After completing the initial refactoring, follow this roadmap for further development:
+
+### 1. Payment Integration (3-4 hours)
+- **Implementation Steps:**
+  1. Set up Stripe account and create product/price configurations
+  2. Create subscription feature directory structure with API, hooks, and components
+  3. Implement Stripe client for server-side API calls
+  4. Create subscription plan database tables and relationships
+  5. Build checkout flow and subscription management portal
+  6. Set up webhook handler for subscription events
+
+- **Key Components:**
+  - **Subscription API:** Functions for creating checkout sessions, managing subscriptions
+  - **Webhook Handler:** Process Stripe events (subscription created, updated, etc.)
+  - **Pricing Component:** Display available plans with features and pricing
+  - **Subscription Hook:** React Query hook to fetch and manage subscription data
+  - **PaymentForm:** Handle credit card input and checkout process
+  - **SubscriptionStatus:** Display current plan and usage information
+
+- **Technical Considerations:**
+  - Store Stripe customer ID in organizations table
+  - Use webhook events to update subscription status
+  - Implement usage tracking for metered features
+  - Use React Query for subscription data caching
+
+### 2. Dashboard & Core Features (4-6 hours)
+- **Implementation Steps:**
+  1. Create shared dashboard layout with navigation and sidebar
+  2. Implement channel feature with components, hooks, and API
+  3. Build channel creation and management UI
+  4. Create user settings pages for account management
+  5. Implement basic dashboard homepage with overview stats
+
+- **Key Components:**
+  - **DashboardShell:** Main layout wrapper with navigation and sidebar
+  - **ChannelList:** Display all channels with filtering options
+  - **ChannelCard:** Show channel summary and quick actions
+  - **CreateChannelForm:** Form for creating new channels
+  - **ChannelDetail:** Display channel information and interactions
+  - **UserSettings:** Manage profile, preferences, and organization
+
+- **Technical Considerations:**
+  - Use React Query for data fetching and caching
+  - Implement proper loading and error states
+  - Create responsive design for mobile and desktop
+  - Set up authorization checks for channel access
+
+### 3. Facebook Authentication (2-3 hours)
+- **Implementation Steps:**
+  1. Create connections feature for managing platform integrations
+  2. Implement OAuth flow for Facebook login
+  3. Build ad account selection UI
+  4. Create database tables for storing connections and ad accounts
+  5. Implement connection status monitoring
+
+- **Key Components:**
+  - **ConnectFacebookButton:** Initiate OAuth flow
+  - **FacebookAccountsList:** Display and manage connected accounts
+  - **AdAccountSelector:** Allow users to select which ad accounts to use
+  - **ConnectionStatus:** Show status of Facebook connection
+  - **ConnectionAPI:** Functions for managing connections
+
+- **Technical Considerations:**
+  - Securely store access tokens
+  - Implement token refresh mechanism
+  - Handle permission scopes properly
+  - Create error handling for failed connections
+
+### 4. Background Jobs (2-3 hours)
+- **Implementation Steps:**
+  1. Set up job scheduling infrastructure
+  2. Create agent-specific data collection jobs
+  3. Implement data processing pipeline
+  4. Add monitoring and error reporting
+  5. Create admin interface for job management
+
+- **Key Components:**
+  - **JobScheduler:** Schedule and manage recurring jobs
+  - **DataCollector:** Fetch data from Facebook and other platforms
+  - **ProcessingPipeline:** Analyze and transform collected data
+  - **JobQueue:** Handle job processing with retries
+  - **JobMonitor:** Track job status and performance
+
+- **Technical Considerations:**
+  - Use a reliable scheduling mechanism
+  - Implement proper error handling and retries
+  - Design for idempotent operations
+  - Add logging for debugging and monitoring
+  - Consider using serverless functions for processing
+
+### 5. Agent Integration (4-6 hours)
+- **Implementation Steps:**
+  1. Create agent feature structure with UI components and hooks
+  2. Implement server-side agent logic
+  3. Build agent activation and configuration flow
+  4. Create recommendation display components
+  5. Implement insights visualization
+
+- **Key Components:**
+  - **AgentCard:** Display agent information and status
+  - **AgentActivation:** Onboarding flow for activating agents
+  - **RecommendationCard:** Show agent recommendations
+  - **InsightsDashboard:** Visualize agent insights and analytics
+  - **AgentSettings:** Configure agent behavior and preferences
+
+- **Technical Considerations:**
+  - Design for multiple agent types
+  - Use React Query for real-time data updates
+  - Create clear separation between UI and logic
+  - Implement proper loading and error states
+  - Consider optimistic updates for better UX
