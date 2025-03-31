@@ -1,5 +1,1 @@
-import { SignUp } from "@clerk/nextjs";
-
-export default function SignUpPage() {
-  return <SignUp />;
-} 
+export { default } from "@/features/auth/pages/sign-up-page"; 

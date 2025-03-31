@@ -1,5 +1,1 @@
-import { SignIn } from "@clerk/nextjs";
-
-export default function SignInPage() {
-  return <SignIn />;
-} 
+export { default } from "@/features/auth/pages/sign-in-page"; 
