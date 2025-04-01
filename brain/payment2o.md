@@ -1,3 +1,58 @@
+# XARVIS Subscription System Implementation Plan
+
+## High-Level Implementation Phases
+
+This plan breaks down the payment system implementation into manageable phases:
+
+1.  **Phase 1: Setup & Foundation**
+    *   **Goal**: Prepare database and Stripe environment.
+    *   **Tasks**:
+        *   Update `organization_subscriptions` table: Add `trial_ends_at` and `current_period_start` columns.
+        *   Stripe Account Setup: Create Stripe account (if needed).
+        *   Stripe Product Setup: Define your subscription product(s) and price(s) in the Stripe dashboard, ensuring a 7-day trial period is configured for the relevant price.
+        *   API Keys & Secrets: Obtain Stripe publishable key, secret key, and webhook signing secret.
+        *   Environment Variables: Add Stripe keys/secrets and `NEXT_PUBLIC_APP_URL` to your `.env` file(s).
+
+2.  **Phase 2: Core Checkout Flow**
+    *   **Goal**: Enable users to initiate checkout and be redirected to Stripe.
+    *   **Tasks**:
+        *   Create Stripe Client (`lib/stripe/client.ts`).
+        *   Implement backend API route (`/api/checkout/route.ts`) to create Stripe Checkout Sessions (including metadata: `clerk_id`, `user_id`, `organization_id`).
+        *   Implement frontend API helper (`features/subscription/api/checkout-api.ts`).
+        *   Create basic checkout button component (`features/subscription/components/checkout-button.tsx`) on the pricing page.
+        *   Handle redirect logic in the pricing page component (`features/subscription/pages/pricing-page.tsx` or similar).
+
+3.  **Phase 3: Webhook Handling & Trial Activation**
+    *   **Goal**: Activate the user's trial subscription in the database when Stripe confirms payment details.
+    *   **Tasks**:
+        *   Implement backend API route (`/api/webhooks/stripe/route.ts`) to receive Stripe webhooks.
+        *   Implement webhook signature verification (`lib/stripe/webhooks.ts`).
+        *   Handle the `checkout.session.completed` event in the webhook handler.
+        *   Update the `organization_subscriptions` record in the database: Set `status` to `trialing`, store Stripe IDs (`customer_id`, `subscription_id`), and set `trial_ends_at`, `current_period_start`, `current_period_end`.
+        *   Set up local webhook testing using Stripe CLI (`stripe listen --forward-to ...`).
+
+4.  **Phase 4: Frontend State & UI Integration**
+    *   **Goal**: Display subscription status and control feature access in the UI.
+    *   **Tasks**:
+        *   Implement React Query hook (`features/subscription/hooks/use-subscription.ts`) to fetch subscription data.
+        *   Implement `SubscriptionProvider` (`features/subscription/components/subscription-provider.tsx`).
+        *   Wrap the application layout (`app/layout.tsx`) with `SubscriptionProvider`.
+        *   Create basic UI components to display subscription status (`features/subscription/components/subscription-status.tsx`).
+        *   Implement basic access control based on subscription status (e.g., disabling premium features if not active/trialing).
+
+5.  **Phase 5: Subscription Management & Additional Webhooks**
+    *   **Goal**: Allow users to manage their subscription and handle ongoing subscription events.
+    *   **Tasks**:
+        *   Implement backend logic to create Stripe Billing Portal sessions.
+        *   Add a link/button in user settings to redirect to the Stripe Billing Portal.
+        *   Expand webhook handler (`/api/webhooks/stripe/route.ts`) to handle other crucial events:
+            *   `customer.subscription.updated`: For plan changes, status updates.
+            *   `customer.subscription.deleted`: For cancellations.
+            *   `invoice.paid`: To update `current_period_start/end` on successful renewals.
+            *   `invoice.payment_failed`: To handle payment issues (e.g., notify user, potentially restrict access).
+
+---
+
 # XARVIS Subscription Flow Documentation
 
 ## Full Subscription Flow Explained
@@ -13,11 +68,14 @@ Here's the complete flow from user signup to active subscription:
    - User creates account with email/password or social login
    - Clerk generates unique user ID
    - Clerk sends webhook to your app (`/api/webhooks/clerk`)
-   - Your webhook handler creates a record in your database (users table)
-   - User is now authenticated
+   - Your webhook handler creates records in your database: 
+     - `users` table entry
+     - `organizations` table entry (user gets their own org)
+     - `organization_subscriptions` table entry with `status: 'incomplete'` (trial not yet active)
+   - User is now authenticated but doesn't have trial access yet.
 
 3. **Redirect After Signup**
-   - After successful signup, user is redirected back to pricing page
+   - After successful signup, user is redirected back to pricing page or directly to checkout.
    - The URL might contain a parameter like `?signup=success`
 
 ## 2. Checkout Process
@@ -66,23 +124,22 @@ Here's the complete flow from user signup to active subscription:
 ## 4. Webhook Processing
 
 1. **Stripe sends webhook events**
-   - When checkout completes, Stripe sends `checkout.session.completed` event
+   - When checkout completes (payment details added), Stripe sends `checkout.session.completed` event
    - This hits your webhook endpoint (`/api/webhooks/stripe/route.ts`)
 
 2. **Webhook verification**
    - Your endpoint verifies webhook signature using `lib/stripe/webhooks.ts`
    - This ensures the request actually came from Stripe
 
-3. **Database updates**
+3. **Database updates & Trial Activation**
    - Your webhook handler extracts data from the event
    - It uses the metadata (user ID, org ID) to identify the customer
-   - It updates your database records:
-     - `organization_subscriptions` table gets updated with:
-       - Stripe customer ID
-       - Stripe subscription ID
-       - Plan ID
-       - Trial end date
-       - Subscription status ("trialing")
+   - It updates the existing `organization_subscriptions` record:
+     - Sets `stripe_customer_id` and `stripe_subscription_id`
+     - Sets `status` to `"trialing"`
+     - Sets `trial_ends_at` (e.g., 7 days from now)
+     - Sets `current_period_start` and `current_period_end` (matching trial period initially)
+   - **This step officially activates the trial period.**
 
 4. **Feature access update**
    - Your system now recognizes the user has an active trial
