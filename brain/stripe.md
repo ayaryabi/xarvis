@@ -22,6 +22,7 @@ This document outlines the step-by-step user and data flow for initiating a Stri
     *   *(Future)* `/app/api/subscription/route.ts`: Handles `GET` request from frontend; checks DB; returns current subscription status.
 *   **Shared Libraries:**
     *   `src/lib/stripe/client.ts`: Initializes Stripe SDK.
+    *   `src/lib/stripe/webhooks.ts`: Contains logic for handling specific webhook events (e.g., `handleCheckoutSessionCompleted`).
     *   `src/lib/supabase/client.ts`, `src/lib/supabase/db.ts`: Supabase client and database helper functions (e.g., `getUserOrgId`, `getOrgSubscription`, `updateOrgSubscription`).
     *   `src/lib/utils/url.ts`: Helper to get the application's base URL.
 
@@ -50,7 +51,7 @@ This document outlines the step-by-step user and data flow for initiating a Stri
     *   Receives `checkout.session.completed` webhook from Stripe.
     *   Verifies signature.
     *   Extracts `organizationId` from metadata, extracts Stripe IDs (`subscription`, `customer`).
-    *   Updates `organization_subscriptions` table for `organizationId` with Stripe IDs and `status: 'trialing'`.
+    *   Calls handler function (e.g., `handleCheckoutSessionCompleted` from `lib/stripe/webhooks.ts`) which updates `organization_subscriptions` table for `organizationId` with Stripe IDs and `status: 'trialing'`.
     *   Returns `200 OK` to Stripe.
 
 **Result:** New user completes sign-up and starts trial successfully. DB reflects trial status.
@@ -129,6 +130,7 @@ This document outlines the step-by-step user and data flow for initiating a Stri
     *   `touch src/app/api/subscription/route.ts`
     *   `touch src/app/api/\(billing\)/portal/route.ts`
     *   `touch src/lib/stripe/client.ts`
+    *   `touch src/lib/stripe/webhooks.ts` # Added per revised plan
 5.  **Initialize Stripe Client:**
     *   Add basic Stripe client initialization code to `src/lib/stripe/client.ts`.
 6.  **Environment Variables:**
@@ -136,4 +138,28 @@ This document outlines the step-by-step user and data flow for initiating a Stri
 7.  **Install Stripe:**
     *   `npm install stripe --legacy-peer-deps`
 
-*(Note: This checklist assumes `src/lib/supabase/db.ts` and `src/lib/utils/url.ts` will be created/updated as needed during implementation.)*
+*(Note: This checklist assumes `src/lib/supabase/db.ts` and `src/lib/utils/url.ts` will be created/updated as needed during implementation. Add `src/lib/stripe/webhooks.ts` placeholder.)*
+
+---
+
+## Phase 2: Core Checkout Flow - Implementation Plan
+
+**Phase 2a: Checkout Initiation & Redirect**
+
+*   **Goal:** Get the user from clicking the button to the Stripe checkout page successfully, handling auth and preventing duplicates.
+*   **Steps:**
+    1.  **Database Helpers (`src/lib/supabase/db.ts`):** Implement/Verify `getUserOrgId` and `getOrgSubscription`.
+    2.  **URL Helper (`src/lib/utils/url.ts`):** Implement/Verify `getBaseUrl`.
+    3.  **Backend API (`/api/checkout/route.ts`):** Implement `POST` handler logic (auth, DB check, Stripe call, metadata, return URL/error).
+    4.  **Frontend Helper (`checkout-api.ts`):** Implement `createCheckoutSession` function.
+    5.  **Frontend UI (`CheckoutButton`, `PricingTable`, `PricingPage`):** Implement components, auth check, post-login redirect, call helper.
+*   **Testing Goal:** Verify correct redirection/error handling for logged-out, new logged-in, and already subscribed users.
+
+**Phase 2b: Webhook Confirmation & Database Update**
+
+*   **Goal:** Process the confirmation from Stripe and update the database.
+*   **Steps:**
+    1.  **Database Helper (`src/lib/supabase/db.ts`):** Implement/Verify `updateOrgSubscription`.
+    2.  **Webhook Handler Logic (`src/lib/stripe/webhooks.ts`):** Implement `handleCheckoutSessionCompleted` function (extract IDs, call `updateOrgSubscription`).
+    3.  **Webhook API Endpoint (`/api/webhooks/stripe/route.ts`):** Implement `POST` handler (verify signature, dispatch to `handleCheckoutSessionCompleted`).
+*   **Testing Goal:** Use Stripe CLI/test webhooks to verify DB update on `checkout.session.completed` event.
