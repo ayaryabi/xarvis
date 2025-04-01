@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button/index"
 import { Container } from "@/components/ui/container/container"
 import { Logo } from "@/components/common/logo"
 import { Menu, X } from "lucide-react"
+import { CheckoutButton as TestCheckoutButton } from "@/features/subscription/components/CheckoutButton"
+
+const BETA_PLAN_PRICE_ID = "price_1R91TY2N81TVNUGdwX6IsTDk"
 
 export function MarketingNavbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -42,9 +45,9 @@ export function MarketingNavbar() {
           <Button variant="ghost">
             Log in
           </Button>
-          <Button variant="white" className="rounded-lg">
+          <TestCheckoutButton priceId={BETA_PLAN_PRICE_ID}>
             Hire XARVIS
-          </Button>
+          </TestCheckoutButton>
         </div>
         
         <div className="md:hidden">
@@ -73,9 +76,11 @@ export function MarketingNavbar() {
             <MobileNavLink href="#community" onClick={() => setMobileMenuOpen(false)}>Community</MobileNavLink>
             <MobileNavLink href="#pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</MobileNavLink>
             
-            <Button variant="white" size="xl" className="mt-4 w-full">
-              Hire XARVIS
-            </Button>
+            <div className="w-full px-8 mt-4">
+              <TestCheckoutButton priceId={BETA_PLAN_PRICE_ID}>
+                Hire XARVIS
+              </TestCheckoutButton>
+            </div>
           </div>
         </div>
       )}

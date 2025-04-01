@@ -1,4 +1,5 @@
 import { supabaseAdmin } from './client';
+import type { OrganizationSubscription, User, OrganizationMember } from './types'; // Import the types
 
 /**
  * User-related database operations
@@ -167,4 +168,86 @@ export async function createUserWithOrganization(userData: {
   await subscriptions.assignFreePlan(organization.id);
   
   return { user, organization };
-} 
+}
+
+/**
+ * Gets the relevant organization ID, subscription details, user role within that org,
+ * and user email for a given Clerk user ID.
+ * Assumes the first organization found for the user is the relevant one.
+ */
+export async function getUserOrgSubRoleAndEmail(clerkId: string): Promise<{
+  organizationId: string | null;
+  subscription: OrganizationSubscription | null;
+  role: OrganizationMember['role'] | null;
+  email: string | null;
+}> {
+  if (!clerkId) {
+    console.warn('[DB Warn] getUserOrgSubRoleAndEmail called with no clerkId');
+    return { organizationId: null, subscription: null, role: null, email: null };
+  }
+
+  try {
+    // 0. Find the Supabase user record (contains email and Supabase ID)
+    const user = await users.getByClerkId(clerkId);
+
+    if (!user) {
+      console.warn(`[DB Warn] No Supabase user found for clerkId ${clerkId}`);
+      return { organizationId: null, subscription: null, role: null, email: null };
+    }
+    const supabaseUserId = user.id;
+    const userEmail = user.email;
+
+    // 1. Find the first organization membership (contains org ID and role)
+    const { data: memberData, error: memberError } = await supabaseAdmin
+      .from('organization_members')
+      .select('organization_id, role')
+      .eq('user_id', supabaseUserId)
+      .limit(1)
+      .single();
+
+    if (memberError && memberError.code !== 'PGRST116') {
+      console.error('[DB Error] Fetching organization member:', memberError);
+      throw memberError;
+    }
+
+    if (!memberData) {
+      console.log(`[DB Info] No organization found for Supabase user ${supabaseUserId} (clerkId: ${clerkId})`);
+      return { organizationId: null, subscription: null, role: null, email: userEmail };
+    }
+
+    const organizationId = memberData.organization_id;
+    const userRoleInOrg = memberData.role;
+
+    // 2. Fetch the subscription details for that organization
+    const { data: subscriptionData, error: subError } = await supabaseAdmin
+      .from('organization_subscriptions')
+      .select('*')
+      .eq('organization_id', organizationId)
+      .maybeSingle();
+
+    if (subError) {
+      console.error('[DB Error] Fetching organization subscription:', subError);
+      throw subError;
+    }
+
+    // 3. Return all the gathered info
+    console.log(`[DB Info] Clerk ${clerkId}, User ${supabaseUserId}, Email ${userEmail}, Org ${organizationId}, Role ${userRoleInOrg}, Sub ${subscriptionData ? subscriptionData.id : 'None'}`);
+
+    return {
+      organizationId,
+      subscription: subscriptionData,
+      role: userRoleInOrg,
+      email: userEmail,
+    };
+
+  } catch (error) {
+    console.error('[DB Error] Failed in getUserOrgSubRoleAndEmail:', error);
+    return { organizationId: null, subscription: null, role: null, email: null };
+  }
+}
+
+// Remove or comment out the previous version if no longer needed
+// export async function getUserOrgAndSubscription(clerkId: string): Promise<{
+//   organizationId: string | null;
+//   subscription: OrganizationSubscription | null;
+// }> { ... } 
