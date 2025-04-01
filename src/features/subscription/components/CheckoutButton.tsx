@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { createCheckoutSession } from '../api/checkout-api'; // Import the helper
 import { Button } from "@/components/ui/button/index"; // Import your styled Button
 import { Loader2 } from 'lucide-react'; // Assuming you use lucide for icons
+import { useAuth } from "@clerk/nextjs"; // <-- Import useAuth
+import { useRouter } from 'next/navigation'; // <-- Import useRouter
 
 interface CheckoutButtonProps {
   priceId: string; // Expect the Price ID as a prop
@@ -11,39 +13,52 @@ interface CheckoutButtonProps {
   // Allow passing standard Button props like className, variant, etc.
   className?: string;
   variant?: "outline" | "ghost" | "white" | "gradient" | undefined;
+  size?: "default" | "lg" | "xl" | "full"; // <-- Ensure size prop definition exists
 }
 
 /**
- * Simple Checkout Button for testing Phase 2a.
- * Uses the styled Button component.
- * Assumes user is logged in.
- * Logs the checkout URL or error to the console instead of redirecting.
+ * Button component for initiating Stripe Checkout.
+ * Handles logged-in state and redirects appropriately.
  */
 export function CheckoutButton({
   priceId,
   children,
   className,
   variant = "white", // Default to white variant like original button
+  size, // <-- Ensure size prop is received
   ...props // Pass rest of the props to the underlying Button
 }: CheckoutButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null); // To display result/error
+  const { isSignedIn } = useAuth(); // <-- Get sign-in status
+  const router = useRouter(); // <-- Get router instance
 
-  const handleTestCheckout = async () => {
+  const handleCheckout = async () => { // Renamed from handleTestCheckout
+    // 1. Check if user is signed in
+    if (!isSignedIn) {
+      console.log('[CheckoutButton] User not signed in. Redirecting to sign-up.');
+      // Redirect to your sign-up page route
+      router.push('/sign-up'); 
+      return; // Stop execution
+    }
+
+    // 2. Proceed if signed in
     setIsLoading(true);
-    setResult(null); // Clear previous result
-    console.log(`[Test CheckoutButton] Attempting checkout for priceId: ${priceId}`);
+    setResult(null); 
+    console.log(`[CheckoutButton] Attempting checkout for priceId: ${priceId}`);
 
     try {
       const checkoutUrl = await createCheckoutSession(priceId);
-      console.log('[Test CheckoutButton] Success! Checkout URL:', checkoutUrl);
-      setResult(`Success! URL: ${checkoutUrl}`);
-      // In real version, redirect: window.location.href = checkoutUrl;
+      console.log('[CheckoutButton] Success! Redirecting to Checkout URL:', checkoutUrl);
+      // 3. Redirect to Stripe on success
+      window.location.href = checkoutUrl; 
 
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
-      console.error('[Test CheckoutButton] Checkout failed:', message);
-      setResult(`Error: ${message}`);
+      console.error('[CheckoutButton] Checkout failed:', message);
+      // Keep showing basic error message for now
+      setResult(`Error: ${message}`); 
+      // TODO: Implement user-friendly error display (e.g., toast)
     } finally {
       setIsLoading(false);
     }
@@ -53,9 +68,10 @@ export function CheckoutButton({
     <div>
       {/* Use the imported Button component */}
       <Button
-        onClick={handleTestCheckout}
+        onClick={handleCheckout} // Use the updated handler
         disabled={isLoading}
         variant={variant} // Apply the variant
+        size={size} // <-- Ensure size prop is passed down
         // Combine passed className with default rounded-lg (if needed)
         // Adjust this based on where rounded-lg was originally applied
         className={`rounded-lg ${className || ''}`.trim()} 
@@ -64,7 +80,7 @@ export function CheckoutButton({
         {isLoading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : null}
-        {children || 'Test Checkout'}
+        {children || 'Checkout'}
       </Button>
       {result && (
         <p style={{ marginTop: '10px', wordBreak: 'break-all' }}>
