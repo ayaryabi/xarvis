@@ -100,3 +100,40 @@ This document outlines the step-by-step user and data flow for initiating a Stri
     *   Instead, it renders alternative UI, like "You are currently subscribed" text or a "Manage Subscription" button (which would eventually link to the Stripe Billing Portal).
 
 **Result:** User is immediately shown they are subscribed and is not presented with the option to start a trial again, providing a smooth user experience and preventing unnecessary clicks/errors.
+
+---
+
+## Phase 1 Setup Checklist (Folders & Placeholders)
+
+1.  **Create Feature Folders:**
+    *   `mkdir -p src/features/subscription/api`
+    *   `mkdir -p src/features/subscription/components`
+    *   `mkdir -p src/features/subscription/hooks`
+    *   `mkdir -p src/features/subscription/pages`
+2.  **Create API Route Folders:**
+    *   `mkdir -p src/app/api/checkout`
+    *   `mkdir -p src/app/api/webhooks/stripe`
+    *   `mkdir -p src/app/api/subscription`
+    *   `mkdir -p src/app/api/\(billing\)/portal`
+3.  **Create Library Folder:**
+    *   `mkdir -p src/lib/stripe`
+4.  **Create Placeholder Files (touch command):**
+    *   `touch src/features/subscription/api/checkout-api.ts`
+    *   `touch src/features/subscription/api/subscription-api.ts` # For future status check
+    *   `touch src/features/subscription/components/CheckoutButton.tsx`
+    *   `touch src/features/subscription/components/PricingTable.tsx`
+    *   `touch src/features/subscription/hooks/useSubscriptionStatus.ts` # For future status check
+    *   `touch src/features/subscription/pages/PricingPage.tsx`
+    *   `touch src/app/api/checkout/route.ts`
+    *   `touch src/app/api/webhooks/stripe/route.ts`
+    *   `touch src/app/api/subscription/route.ts`
+    *   `touch src/app/api/\(billing\)/portal/route.ts`
+    *   `touch src/lib/stripe/client.ts`
+5.  **Initialize Stripe Client:**
+    *   Add basic Stripe client initialization code to `src/lib/stripe/client.ts`.
+6.  **Environment Variables:**
+    *   Add `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` to `.env.local`.
+7.  **Install Stripe:**
+    *   `npm install stripe --legacy-peer-deps`
+
+*(Note: This checklist assumes `src/lib/supabase/db.ts` and `src/lib/utils/url.ts` will be created/updated as needed during implementation.)*
