@@ -36,9 +36,13 @@ export function CheckoutButton({
   const handleCheckout = async () => { // Renamed from handleTestCheckout
     // 1. Check if user is signed in
     if (!isSignedIn) {
-      console.log('[CheckoutButton] User not signed in. Redirecting to sign-up.');
-      // Redirect to your sign-up page route
-      router.push('/sign-up'); 
+      console.log('[CheckoutButton] User not signed in. Redirecting to sign-up with checkout intent for /pricing.');
+      // Construct the final return URL *with* the necessary query parameters
+      const returnUrl = `/pricing?action=checkout&priceId=${priceId}`;
+      // Construct the Clerk sign-up URL, encoding the *full* return URL
+      const signUpUrl = `/sign-up?redirect_url=${encodeURIComponent(returnUrl)}`;
+      console.log('[CheckoutButton] Constructed sign-up URL:', signUpUrl);
+      router.push(signUpUrl);
       return; // Stop execution
     }
 

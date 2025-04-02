@@ -106,43 +106,10 @@ export const organizations = {
   }
 };
 
-/**
- * Subscription-related database operations
- */
-export const subscriptions = {
-  // Get Free plan
-  async getFreePlan() {
-    const { data, error } = await supabaseAdmin
-      .from('subscription_plans')
-      .select('*')
-      .eq('name', 'Free')
-      .single();
-
-    if (error) throw error;
-    return data;
-  },
-
-  // Assign Free plan to an organization
-  async assignFreePlan(organizationId: string) {
-    const freePlan = await this.getFreePlan();
-    
-    const { data, error } = await supabaseAdmin
-      .from('organization_subscriptions')
-      .insert([{
-        organization_id: organizationId,
-        plan_id: freePlan.id,
-        status: 'active'
-      }])
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  }
-};
 
 /**
- * Helper function to create a new user complete with organization and free plan
+ * Helper function to create a new user complete with organization.
+ * This function is designed to be idempotent (safe to call multiple times).
  */
 export async function createUserWithOrganization(userData: {
   clerk_id: string;
@@ -151,23 +118,60 @@ export async function createUserWithOrganization(userData: {
   avatar_url?: string;
   organization_name?: string;
 }) {
-  const organizationName = userData.organization_name || `${userData.name}'s Organization`;
-  
-  // create a user in supabase
-  const user = await users.create(userData);
-  
-  // Create organization
-  const organization = await organizations.create({
-    name: organizationName
-  });
-  
-  // Add user as admin to organization
-  await organizations.addMember(organization.id, user.id, 'admin');
-  
-  // Assign free plan
-  await subscriptions.assignFreePlan(organization.id);
-  
-  return { user, organization };
+  console.log(`[DB] Attempting to create user/org for Clerk ID: ${userData.clerk_id}`);
+
+  // 1. Check if user already exists
+  let user = await users.getByClerkId(userData.clerk_id);
+
+  if (user) {
+    console.log(`[DB] User with Clerk ID ${userData.clerk_id} already exists (Supabase ID: ${user.id}). Skipping creation.`);
+    // Optional: You could fetch and return existing organization details if needed
+    // For now, just returning null indicates no *new* creation happened.
+    return { user, organization: null }; // Indicate user exists, no new org created by *this* call
+  }
+
+  // 2. User does not exist, proceed with creation
+  console.log(`[DB] User with Clerk ID ${userData.clerk_id} not found. Proceeding with creation...`);
+  try {
+    const organizationName = userData.organization_name || `${userData.name}'s Organization`;
+
+    // Create user in Supabase
+    user = await users.create(userData);
+    console.log(`[DB] Created Supabase user ${user.id} for Clerk ID ${userData.clerk_id}`);
+
+    // Create organization
+    const organization = await organizations.create({
+      name: organizationName
+    });
+    console.log(`[DB] Created organization ${organization.id} (${organization.name})`);
+
+    // Add user as admin to organization
+    await organizations.addMember(organization.id, user.id, 'admin');
+    console.log(`[DB] Added user ${user.id} as admin to organization ${organization.id}`);
+
+    return { user, organization };
+
+  } catch (error: any) {
+    // Handle potential race condition: If another webhook call created the user
+    // between the initial check and the users.create call.
+    if (error.code === '23505') { // Check for unique constraint violation
+       console.warn(`[DB Warn] Race condition likely occurred for Clerk ID ${userData.clerk_id}. Another process may have created the user/org already. Attempting to fetch existing user.`);
+       // Re-fetch the user to be sure
+       const existingUser = await users.getByClerkId(userData.clerk_id);
+       if (existingUser) {
+         console.log(`[DB] Found existing user ${existingUser.id} after race condition.`);
+         // You might want to fetch the associated org too if needed downstream
+         return { user: existingUser, organization: null }; // Return existing user, indicate no *new* org created
+       } else {
+         console.error(`[DB Error] Failed to create user/org for ${userData.clerk_id} due to potential race condition, but couldn't find existing user afterwards. Error:`, error);
+         throw error; // Re-throw if user still not found
+       }
+    } else {
+      // Handle other errors during creation
+      console.error(`[DB Error] Failed during createUserWithOrganization for Clerk ID ${userData.clerk_id}:`, error);
+      throw error; // Re-throw the error to be handled by the webhook caller
+    }
+  }
 }
 
 /**

@@ -13,6 +13,7 @@ export default authMiddleware({
     "/privacy",
     "/terms",
     "/data-deletion",
+    "/pricing",
   ],
 });
 
