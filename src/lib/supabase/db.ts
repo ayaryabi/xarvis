@@ -251,3 +251,115 @@ export async function getUserOrgSubRoleAndEmail(clerkId: string): Promise<{
 //   organizationId: string | null;
 //   subscription: OrganizationSubscription | null;
 // }> { ... } 
+
+// --- NEW Subscription Functions for Stripe Webhooks ---
+
+/**
+ * Finds the internal Supabase plan ID based on a Stripe Price ID.
+ */
+export async function findPlanIdByStripePriceId(stripePriceId: string): Promise<string | null> {
+  if (!stripePriceId) return null;
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('subscription_plans')
+      .select('id')
+      .eq('stripe_price_id', stripePriceId)
+      .limit(1)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error(`[DB Error] Failed to find plan for stripePriceId ${stripePriceId}:`, error);
+      throw error;
+    }
+
+    return data?.id || null;
+  } catch (error) {
+    console.error('[DB Error] Exception in findPlanIdByStripePriceId:', error);
+    return null;
+  }
+}
+
+/**
+ * Upserts subscription data into the organization_subscriptions table.
+ * Uses stripe_subscription_id as the conflict target.
+ */
+export async function upsertOrganizationSubscription(data: {
+  organization_id: string;
+  plan_id: string; // Internal Supabase plan UUID
+  stripe_subscription_id: string;
+  stripe_customer_id: string;
+  status: string;
+  current_period_end: Date;
+  current_period_start: Date;
+  trial_ends_at: Date | null;
+}) {
+  console.log(`[DB] Upserting subscription: ${data.stripe_subscription_id} for Org: ${data.organization_id}`);
+  try {
+    const { error } = await supabaseAdmin
+      .from('organization_subscriptions')
+      .upsert(data, { onConflict: 'stripe_subscription_id' }); // Upsert based on Stripe Subscription ID
+
+    if (error) {
+      console.error(`[DB Error] Failed to upsert subscription ${data.stripe_subscription_id}:`, error);
+      throw error;
+    }
+    console.log(`[DB] Successfully upserted subscription ${data.stripe_subscription_id}`);
+  } catch (error) {
+    console.error('[DB Error] Exception during subscription upsert:', error);
+    throw error; // Re-throw to be caught by webhook handler
+  }
+}
+
+/**
+ * Updates only the status of a subscription based on the Stripe Subscription ID.
+ */
+export async function updateSubscriptionStatusBySubId(stripeSubscriptionId: string, status: string) {
+  console.log(`[DB] Updating status for subscription ${stripeSubscriptionId} to ${status}`);
+  try {
+    const { error } = await supabaseAdmin
+      .from('organization_subscriptions')
+      .update({ status: status })
+      .eq('stripe_subscription_id', stripeSubscriptionId);
+
+    if (error) {
+      console.error(`[DB Error] Failed to update status for subscription ${stripeSubscriptionId}:`, error);
+      throw error;
+    }
+    console.log(`[DB] Successfully updated status for subscription ${stripeSubscriptionId}`);
+  } catch (error) {
+    console.error('[DB Error] Exception during subscription status update:', error);
+    throw error; // Re-throw to be caught by webhook handler
+  }
+}
+
+/**
+ * Finds the internal Supabase organization ID based on a Stripe Subscription ID.
+ */
+export async function findOrgIdByStripeSubId(stripeSubscriptionId: string): Promise<string | null> {
+  if (!stripeSubscriptionId) return null;
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('organization_subscriptions')
+      .select('organization_id')
+      .eq('stripe_subscription_id', stripeSubscriptionId)
+      .limit(1)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error(`[DB Error] Failed to find org for stripeSubscriptionId ${stripeSubscriptionId}:`, error);
+      throw error;
+    }
+
+    return data?.organization_id || null;
+  } catch (error) {
+    console.error('[DB Error] Exception in findOrgIdByStripeSubId:', error);
+    return null;
+  }
+}
+
+// NOTE: We are using upsert for simplicity. If finer-grained updates
+// are needed (e.g., only updating specific fields based on event type),
+// separate update functions like updateSubscriptionPeriod/updateSubscriptionStatus
+// could be created and called instead of the generic upsert. 

@@ -8,6 +8,7 @@ export default authMiddleware({
     "/sign-up",
     "/api/webhooks",
     "/api/webhooks/clerk",
+    "/api/webhooks/stripe",
     "/refactor",
     "/privacy",
     "/terms",

@@ -12,9 +12,15 @@ if (!stripeSecretKey) {
   // throw new Error('Stripe secret key is missing');
 }
 
+// Use the explicit API version from environment or fallback
+// Align this with your Stripe webhook endpoint version if issues arise
+const apiVersion = process.env.STRIPE_API_VERSION || '2024-09-30.acacia'; // <-- Update this version
+
+console.log(`Initializing Stripe client with API version: ${apiVersion}`);
+
 // Initialize Stripe with the API key and specify the API version.
 // It's recommended to pin the API version to ensure stability.
 export const stripe = new Stripe(stripeSecretKey || '', {
-  apiVersion: '2025-02-24.acacia', // Update API version based on linter error
+  apiVersion: apiVersion as Stripe.LatestApiVersion, // Cast needed by Stripe type
   typescript: true, // Enable TypeScript support
 });
