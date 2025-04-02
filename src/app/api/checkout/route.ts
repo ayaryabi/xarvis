@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     // 4. Construct Redirect URLs
     const baseUrl = getBaseUrl();
     const successUrl = `${baseUrl}/dashboard?checkout=success`;
-    const cancelUrl = `${baseUrl}/pricing?checkout=cancel`;
+    const cancelUrl = `${baseUrl}/?checkout=cancel`;
     console.log(`[API /checkout] Base URL: ${baseUrl}, Success: ${successUrl}, Cancel: ${cancelUrl}`);
 
     // 5. Create Stripe Checkout Session
