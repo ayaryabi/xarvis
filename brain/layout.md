@@ -89,3 +89,42 @@ This section maps the core MVP features to the planned architecture.
     *   **Routing:**
         *   `app/(dashboard)/connections/page.tsx`: Main page to initiate connections and view globally connected accounts. Rendered in Main Content Area when 'datasources' section is active.
         *   Relies on `ContextualNavPanel` showing relevant connection info/actions when 'datasources' is active.
+
+## Implementation Steps (Post-Layout Skeleton)
+
+Following the initial setup of the layout skeleton and basic state connection:
+
+**Phase 1: Core Channel Management & Listing**
+
+1.  **Backend - Channels API/Actions:**
+    *   Define `channels` table schema in Supabase.
+    *   Implement `GET /api/channels/route.ts` to fetch user's channels.
+    *   Implement Server Action `createChannel` (e.g., in `src/features/channels/actions.ts`) to handle channel creation.
+
+2.  **Frontend - Feature Components (`features/channels`):**
+    *   Build `ChannelList.tsx`:
+        *   Use `useQuery` (React Query) to call `GET /api/channels`.
+        *   Render fetched channels as Next.js `<Link>` components (`/dashboard/[channelId]`).
+        *   Include an "Add Channel" button.
+
+3.  **Frontend - Layout Integration & State:**
+    *   Implement Zustand store (`src/stores/dashboard-layout-store.ts`) with `activeSection` state and `setActiveSection` action.
+    *   Connect `PrimarySidebar.tsx` to call `setActiveSection` on button clicks.
+    *   Connect `(dashboard)/layout.tsx` to read `activeSection` from the store and pass it to `ContextualNavPanel`.
+    *   Update `ContextualNavPanel.tsx`: Import and render `<ChannelList />` when `activeSection` is `'channels'`. Add logic to return `null` for other sections for now.
+    *   Connect the "Add Channel" button in `<ChannelList />` to open the `<CreateChannelModal />`.
+
+4.  **Frontend - Basic Channel Page:**
+    *   Create dynamic route folder `src/app/dashboard/[channelId]/`.
+    *   Create `src/app/dashboard/[channelId]/page.tsx`:
+        *   Get `channelId` from `params`.
+        *   Display basic placeholder content like "Content for Channel: {channelId}".
+
+**Subsequent Phases (To be detailed later):**
+
+*   Implement Message Viewing & Sending.
+*   Implement Channel Tabs.
+*   Implement Datasource Connection.
+*   Implement Agent/Source Linking within Channel Tabs.
+*   Integrate Realtime functionality.
+*   UI Refinement and Error Handling.
