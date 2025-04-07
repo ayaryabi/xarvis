@@ -2,8 +2,13 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react'; // Using lucide for icons
 import { useChannels } from '../hooks/use-channels'; 
+// Import hook to read route parameters
+import { useParams } from 'next/navigation';
+// Import clsx for conditional classes
+import clsx from 'clsx';
 
 // Define the expected shape of a channel object from the API
 interface Channel {
@@ -13,7 +18,12 @@ interface Channel {
 }
 
 export function ChannelList() {
+  // Get data using the custom hook
   const { data: channels, isLoading, isError, error } = useChannels();
+  // Get route parameters
+  const params = useParams();
+  // Extract the active channel ID from parameters, ensure it's a string
+  const activeChannelId = typeof params?.channelId === 'string' ? params.channelId : null;
 
   const handleAddChannelClick = () => {
     // TODO: Implement logic to open CreateChannelModal
@@ -48,15 +58,29 @@ export function ChannelList() {
           </div>
         )}
         {!isLoading && !isError && channels && channels.length > 0 && (
-          channels.map((channel) => (
-            <Link
-              key={channel.id}
-              href={`/dashboard/${channel.id}`}
-              className="block px-2 py-1.5 text-sm rounded-md text-gray-300 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-600 hover:text-white dark:hover:text-gray-100"
-            >
-              # {channel.name}
-            </Link>
-          ))
+          channels.map((channel) => {
+            // Determine if this channel link is the active one
+            const isActive = channel.id === activeChannelId;
+            return (
+              <Link
+                key={channel.id}
+                href={`/dashboard/channels/${channel.id}`}
+                className={clsx(
+                  'flex items-center w-full px-3 py-1.5 text-sm rounded-md transition-all duration-100',
+                  {
+                    'bg-gray-200 dark:bg-gray-700 font-medium': isActive,
+                    'hover:bg-gray-100 dark:hover:bg-gray-700': !isActive,
+                  },
+                  'text-gray-700 dark:text-gray-300'
+                )}
+              >
+                <div className="flex items-center w-full">
+                  <span className="text-gray-500 dark:text-gray-400 w-6 flex-shrink-0">#</span>
+                  <span className="truncate">{channel.name.replace(/^#+/, '')}</span>
+                </div>
+              </Link>
+            );
+          })
         )}
         {!isLoading && !isError && (!channels || channels.length === 0) && (
            <div className="text-sm text-gray-400 px-2 py-1.5">No channels found.</div>

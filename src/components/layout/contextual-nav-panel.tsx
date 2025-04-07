@@ -1,34 +1,40 @@
 import React from 'react';
 // Ensure correct casing in import
 import { ChannelList } from '@/features/channels/components/channelList';
+// TODO: Import other components like SettingsSubNav, AgentFilterNav later
 
 // Placeholder component - conditional logic will be added later
 
 interface ContextualNavPanelProps {
   // Prop to receive active section from layout (via Zustand)
-  activeSection?: string; // Make optional for initial placeholder
+  activeSection: string; // Now required, passed down from layout
 }
 
 export function ContextualNavPanel({ activeSection }: ContextualNavPanelProps) {
 
-  // TODO: Add conditional rendering based on activeSection later
-  // e.g., if (activeSection === 'channels') return <ChannelList />;
-  //       else if (activeSection === 'settings') return <SettingsSubNav />;
-  //       else return null;
+  // --- Conditional Rendering based on activeSection --- 
+  if (activeSection === 'channels') {
+    return <ChannelList />;
+  }
+  
+  // TODO: Add other conditions later
+  // else if (activeSection === 'settings') {
+  //   return <SettingsSubNav />;
+  // }
 
-  // --- TEMPORARY: Always render ChannelList for visualization --- 
-  console.log(`ContextualNavPanel rendering (Temp: Forcing ChannelList). Active section prop is: ${activeSection}`);
-  return <ChannelList />;
-  // --- END TEMPORARY --- 
+  // For sections that don't use this panel (like 'home') or are unknown,
+  // render nothing.
+  if (activeSection === 'home' || activeSection === 'agents' || activeSection === 'connections' || activeSection === 'settings') {
+     // Placeholder for sections that WILL have content here later
+     // In a real implementation, you might return specific nav/filter components
+     return (
+       <div className="p-4 text-sm text-gray-500 dark:text-gray-400">
+         Contextual Nav for: {activeSection}
+         <br/>(Content TBD)
+       </div>
+     );
+  }
 
-  // Original placeholder code:
-  /*
-  return (
-    <div className="p-4 text-sm text-gray-700 dark:text-gray-300">
-      <h3 className="font-semibold mb-2">Contextual Panel</h3>
-      <p>Content for section: <span className="font-medium text-indigo-600 dark:text-indigo-400">{activeSection || 'none'}</span></p>
-      <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">(Placeholder - will show relevant lists/nav later)</p>
-    </div>
-  );
-  */
+  // Default: Render nothing if the section doesn't need this panel
+  return null; 
 } 

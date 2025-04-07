@@ -1,21 +1,26 @@
 import React from 'react';
+// Import the Zustand store hook and action
+import { useDashboardLayoutStore } from '@/stores/dashboard-layout-store';
 
 // Placeholder component - will connect to Zustand action later
 
-interface PrimarySidebarProps {
-  // TODO: Add prop for onSectionSelect callback OR remove if using Zustand directly
-  // onSectionSelect?: (sectionName: string) => void;
-}
+// Remove prop interface if not needed
+// interface PrimarySidebarProps {
+//   onSectionSelect?: (sectionName: string) => void;
+// }
 
-export function PrimarySidebar({ /* props */ }: PrimarySidebarProps) {
+export function PrimarySidebar(/* { props } */) {
 
-  // TODO: Import and use setActiveSection from Zustand store
+  // Get the action function from the Zustand store
+  const setActiveSection = useDashboardLayoutStore((state) => state.setActiveSection);
 
+  // No need for local handleSelect anymore if just calling the store action
+  /*
   const handleSelect = (sectionName: string) => {
     console.log('Selected section:', sectionName);
-    // props.onSectionSelect?.(sectionName); // Use if using callback prop
-    // setActiveSection(sectionName); // Use if using Zustand
+    // setActiveSection(sectionName); // Call the store action here
   };
+  */
 
   // Example sections
   const sections = [
@@ -31,7 +36,8 @@ export function PrimarySidebar({ /* props */ }: PrimarySidebarProps) {
       {sections.map((section) => (
         <button
           key={section.id}
-          onClick={() => handleSelect(section.id)}
+          // Call the store action directly onClick
+          onClick={() => setActiveSection(section.id)}
           title={section.name}
           className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-700 text-xl text-gray-300 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900"
         >
