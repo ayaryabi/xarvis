@@ -1,4 +1,10 @@
-import React from 'react';
+'use client'; // Make this a Client Component
+
+import React, { useEffect } from 'react'; // Import useEffect
+import { usePathname } from 'next/navigation'; // Import usePathname
+
+// Define a key for localStorage
+const LOCALSTORAGE_KEY_CHANNELS = 'lastVisitedUrl_channels';
 
 // This page component receives route parameters via the 'params' prop
 interface ChannelPageProps {
@@ -7,9 +13,17 @@ interface ChannelPageProps {
   };
 }
 
-// This is a Server Component by default in the App Router
+// This is now a Client Component
 export default function ChannelPage({ params }: ChannelPageProps) {
   const { channelId } = params;
+  const pathname = usePathname(); // Get the current full path
+
+  // Save the current path to localStorage whenever it changes (or component mounts)
+  useEffect(() => {
+    if (pathname) {
+      localStorage.setItem(LOCALSTORAGE_KEY_CHANNELS, pathname);
+    }
+  }, [pathname]);
 
   return (
     <div>

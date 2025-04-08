@@ -6,9 +6,6 @@ import { DashboardHeader } from '@/components/layout/dashboard-header';
 import { PrimarySidebar } from '@/components/layout/primary-sidebar';
 import { ContextualNavPanel } from '@/components/layout/contextual-nav-panel';
 
-// Import the Zustand store hook
-import { useDashboardLayoutStore } from '@/stores/dashboard-layout-store';
-
 // TODO: Import Zustand store and state if using Zustand
 // import { useDashboardLayoutStore } from '@/stores/dashboard-layout-store';
 
@@ -25,7 +22,7 @@ export default function DashboardAppLayout({
   // const setActiveSectionAction = useDashboardLayoutStore((state) => state.setActiveSection);
 
   // Get the activeSection state from the Zustand store
-  const activeSection = useDashboardLayoutStore((state) => state.activeSection);
+  // const activeSection = useDashboardLayoutStore((state) => state.activeSection);
   // No need to get the action here unless the layout itself needs to change the section
 
   return (
@@ -33,7 +30,7 @@ export default function DashboardAppLayout({
       header={<DashboardHeader />}
       // PrimarySidebar now calls store directly, no props needed here
       primaryNav={<PrimarySidebar />}
-      contextualNav={<ContextualNavPanel activeSection={activeSection} />}
+      contextualNav={<ContextualNavPanel />}
     >
       {children} {/* The content from page.tsx goes here */}
     </DashboardShell>
